@@ -15,6 +15,7 @@ class Event(models.Model):
     event_link = models.CharField(max_length=255)
     event_img = models.CharField(max_length=255)
     organization_page = models.CharField(max_length=255)
+    event_location = models.CharField(max_length=255)
     
 
     def __str__(self):
