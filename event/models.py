@@ -11,12 +11,12 @@ class Event(models.Model):
     ticket_price = models.IntegerField(null=True)
     tickets_left = models.BooleanField(null=True)
     tickets_available = models.IntegerField(null=True)
-    buy_tickets = models.CharField(max_length=255)
-    event_link = models.CharField(max_length=255)
-    event_img = models.CharField(max_length=255)
-    organization_page = models.CharField(max_length=255)
-    event_location = models.CharField(max_length=255)
-    
+    buy_tickets = models.CharField(max_length=255, null=True)
+    event_link = models.CharField(max_length=255, null=True)
+    event_img = models.CharField(max_length=255, null=True)
+    organization_page = models.CharField(max_length=255, null=True)
+    event_location = models.CharField(max_length=255, null=True)
 
+    
     def __str__(self):
         return self.nombre
