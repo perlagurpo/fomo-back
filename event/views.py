@@ -1,3 +1,5 @@
+###views.py ES JUAN ROMÁN RIQUELME###
+
 from django.shortcuts import render
 
 # Create your views here.
@@ -13,8 +15,8 @@ class UserViewSet(viewsets.ViewSet):
     """
     A simple ViewSet for listing or retrieving users.
     """
-    def list(self, request):
-        if len(request.data.keys()) == 0:
+    def list(self, request): #si llega una GET request:
+        if len(request.data.keys()) == 0: #si llega sin pedir filtro muestra todo
             
             queryset = Event.objects.all() #bbdd
             serializer = EventSerializer(queryset, many=True) #transforma de obj
@@ -25,7 +27,7 @@ class UserViewSet(viewsets.ViewSet):
         serializer = EventSerializer(result, many=True) #transforma de obj
         return Response(serializer.data) #retorna respuesta
     
-    def create(self, request):
+    def create(self, request): #si llega un POST request:
         serializer = EventSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
