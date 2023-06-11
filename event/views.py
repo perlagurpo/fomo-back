@@ -22,9 +22,30 @@ class UserViewSet(viewsets.ViewSet):
             serializer = EventSerializer(queryset, many=True) #transforma de obj
             return Response(serializer.data) #retorna respuesta
         
-        filters = request.data
-        result = Event.objects.filter(start_date=filters['start_date'])
-        serializer = EventSerializer(result, many=True) #transforma de obj
+        if len(request.data.keys()) > 0:
+
+            filters = request.data
+            event_filter_qs = Event.objects.filter(start_date=filters['start_date']) #los filtros tienen uno o varios parámetros de entrada que siempre son los atributos del modelo en formato string
+
+        """
+        ###IMPORTANTE: Creo que esta forma primero pide toda la BBDD y después filtra... medio al pedo.
+        if len(request.data.keys()) > 0:
+            filters = request.data
+            
+            # Crear una lista de consultas (Q objects) dinámicamente
+            queries = [Q(**{key: value}) for key, value in filters.items()]
+            
+            # Combinar las consultas utilizando operador OR
+            query = queries.pop()
+            for item in queries:
+                query |= item
+            
+            # Aplicar el filtro al queryset
+            queryset = queryset.filter(query)
+        
+        serializer = EventSerializer(queryset, many=True)
+        """
+        serializer = EventSerializer(event_filter_qs, many=True) #transforma de obj
         return Response(serializer.data) #retorna respuesta
     
     def create(self, request): #si llega un POST request:
