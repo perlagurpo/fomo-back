@@ -44,6 +44,14 @@ class UserViewSet(viewsets.ViewSet):
                 queryset = filtro_event_name_contain(data=filters, query_set=queryset) 
 
             serializer = EventSerializer(queryset, many=True)
+            estardei = serializer.data
+
+            for item in estardei:
+                if item['start_date'] is not None:
+                   item['start_date'] = item['start_date'].replace('T', ' ').replace('Z', '')
+
+
+            print(estardei)
             return Response(serializer.data)               
 
            
