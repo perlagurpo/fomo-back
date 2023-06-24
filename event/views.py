@@ -31,7 +31,7 @@ class UserViewSet(viewsets.ViewSet):
 
 
         if len(request.data.keys()) > 0:
-            print('req data keys',request.data.keys())
+            #print('req data keys',request.data.keys())
             filters = request.data 
             ###Filtro estricto###
             filters_list = ['event_name', 'event_type', 'ticket_price', 'event_link']  #filtros permitidos
@@ -45,7 +45,7 @@ class UserViewSet(viewsets.ViewSet):
                 if filters_match: #si tiene elementos
                     event_filter_qs = Event.objects #creamos consulta base
                     for filtro in filters_match: #para cada filtro de la lista de coincidencias pedidos-permitidos
-                        event_filter_qs = event_filter_qs.filter(**{filtro: filters.get[filtro]}) #El operador ** se utiliza en Python para desempaquetar un diccionario y pasar sus elementos como argumentos de palabras clave a una función.
+                        event_filter_qs = event_filter_qs.filter(**{filtro: filters.get(filtro)}) #El operador ** se utiliza en Python para desempaquetar un diccionario y pasar sus elementos como argumentos de palabras clave a una función.
 
                     serializer = EventSerializer(event_filter_qs, many=True)
                     return Response(serializer.data)
