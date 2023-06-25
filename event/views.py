@@ -12,21 +12,17 @@ from event.models import Event
 from rest_framework import filters
 from datetime import datetime
 
-
 from rest_framework import generics
 from .models import Event
 from .serializer import EventSerializer
-from event.services import filtro_fecha_exacta, filtro_event_name_contain
+from event.services import date_filter, event_name_contain_filter, replace_T_and_Z
 
 class UserViewSet(viewsets.ViewSet):
     """
     A simple ViewSet for listing or retrieving users.
     """
     def list(self, request): #si llega una GET request:
-        #print('request:',request)##request: <rest_framework.request.Request: GET '/event/event/'>
-        #print('request.data',request.data)# imprime {} porque la request no viene con filtros?
         if len(request.data.keys()) == 0: #si llega sin pedir filtro muestra todo
-            #print('vacío')
             queryset = Event.objects.all() #bbdd a qs
             serializer = EventSerializer(queryset, many=True) #transforma de obj
             return Response(serializer.data) #retorna respuesta
@@ -38,24 +34,18 @@ class UserViewSet(viewsets.ViewSet):
             filters = request.data
 
             if 'start_date' in filters.keys():
-                queryset = filtro_fecha_exacta(data=filters, query_set=queryset)
+                queryset = date_filter(data=filters, query_set=queryset)
 
             if 'event_name' in filters.keys():
-                queryset = filtro_event_name_contain(data=filters, query_set=queryset) 
+                queryset = event_name_contain_filter(data=filters, query_set=queryset) 
+
+            #Agregar filtros de orden EJ: queryset = MiModelo.objects.order_by("-fecha")
 
             serializer = EventSerializer(queryset, many=True)
-            estardei = serializer.data
+            serializer = replace_T_and_Z(serializer)
 
-            for item in estardei:
-                if item['start_date'] is not None:
-                   item['start_date'] = item['start_date'].replace('T', ' ').replace('Z', '')
-
-
-            print(estardei)
             return Response(serializer.data)               
 
-           
-               
     def create(self, request): #si llega un POST request:
         serializer = EventSerializer(data=request.data)
         if serializer.is_valid():
