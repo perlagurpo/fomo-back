@@ -15,7 +15,7 @@ from datetime import datetime
 from rest_framework import generics
 from .models import Event
 from .serializer import EventSerializer
-from event.services import date_filter, event_name_contain_filter, replace_T_and_Z
+from event.services import date_filter, event_name_contain_filter, replace_T_and_Z, ticket_price_order
 
 class UserViewSet(viewsets.ViewSet):
     """
@@ -40,6 +40,8 @@ class UserViewSet(viewsets.ViewSet):
                 queryset = event_name_contain_filter(data=filters, query_set=queryset) 
 
             #Agregar filtros de orden EJ: queryset = MiModelo.objects.order_by("-fecha")
+            if 'ticket_price' in filters.keys(): #NO ANDA
+                queryset = ticket_price_order(data=filters, query_set=queryset)
 
             serializer = EventSerializer(queryset, many=True)
             serializer = replace_T_and_Z(serializer)
