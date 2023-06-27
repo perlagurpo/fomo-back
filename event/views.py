@@ -40,6 +40,7 @@ class UserViewSet(viewsets.ViewSet):
                 queryset = event_name_contain_filter(data=filters, query_set=queryset) 
 
             #Agregar filtros de orden EJ: queryset = MiModelo.objects.order_by("-fecha")
+            #Cómo hago para recibir asc o desc en el request?? si no tendría que pedir que el click al botón en el front me mande otra cosa?
             if 'ticket_price' in filters.keys(): #NO ANDA
                 queryset = ticket_price_order(data=filters, query_set=queryset)
 

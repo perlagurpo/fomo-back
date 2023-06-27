@@ -61,7 +61,14 @@ def replace_T_and_Z(serializer):
             item['start_date'] = item['start_date'].replace('T', ' ').replace('Z', '')
             return serializer
 
-def ticket_price_order(data, query_set): #NO ANDA
+""" def ticket_price_order(data, query_set): #NO ANDA
     if 'ticket_price' in data.keys():
         event_filter_qs = query_set.order_by('ticket_price')#si hiciera '-ticket_price' el ordenamiento sería descendente
-        return event_filter_qs
+        return event_filter_qs """
+    
+def ticket_price_order(data, query_set):
+    if 'ticket_price' in data:
+        order_by_field = 'ticket_price' if data['ticket_price'] == 'asc' else '-ticket_price'
+        return query_set.order_by(order_by_field)
+    else:
+        return query_set
