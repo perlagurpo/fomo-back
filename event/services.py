@@ -67,7 +67,7 @@ def ticket_price_order(data, query_set): #ANDA
         return event_filter_qs
     else:
         return query_set
-####debería ser###
+####debería ser### CAMBIAR TICKET PRICE POR RANGE, SOLO FILTROS
 def ticket_price_order_button(data, query_set, asc=True): #Cómo pido el parámetro asc?
     """Función que ordena el atributo 'ticket_price' de forma ascendente o descendente
 
