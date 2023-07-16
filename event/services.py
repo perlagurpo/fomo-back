@@ -22,9 +22,12 @@ def main_filters(self, request):
             if 'event_name' in filters.keys():
                 queryset = event_name_contain_filter(data=filters, query_set=queryset) 
 
-            #Agregar filtros de orden EJ: queryset = MiModelo.objects.order_by("-fecha")
-            #Cómo hago para recibir asc o desc en el request?? si no tendría que pedir que el click al botón en el front me mande otra cosa?
-            #También podría ser un filtro doble slide en el front que sea valores between
+            if 'event_type' in filters.keys():
+                queryset = event_type_contain_filter(data=filters, query_set=queryset)
+
+            #if 'has_ticket' in filters.keys(): #LO PUEDE HACER EL FRONT?
+
+
             if 'ticket_price' in filters.keys(): #ANDA
                 queryset = ticket_price_order(data=filters, query_set=queryset)
 
@@ -67,6 +70,12 @@ def date_filter(data, query_set):
         duration = start_date - end_date
         print(duration)
     return duration """
+
+def event_type_contain_filter(data, query_set):
+    if 'event_type' in data.keys():
+        event_type = data['event_type']
+        event_filter_qs = query_set.filter(event_type__icontains=event_type)        
+        return event_filter_qs
 
 
 def event_name_contain_filter(data, query_set):
