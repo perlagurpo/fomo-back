@@ -69,6 +69,16 @@ def ticket_price_order(data, query_set): #ANDA
         return query_set
 ####debería ser###
 def ticket_price_order_button(data, query_set, asc=True): #Cómo pido el parámetro asc?
+    """Función que ordena el atributo 'ticket_price' de forma ascendente o descendente
+
+    Args:
+        data (_type_): _description_
+        query_set (_type_): _description_
+        asc (bool, optional): _description_. Defaults to True.
+
+    Returns:
+        _type_: _description_
+    """
     if 'ticket_price' in data.keys():
         if asc == False:
             event_filter_qs = query_set.order_by('-ticket_price')#si hiciera 'ticket_price' el ordenamiento sería descendente
