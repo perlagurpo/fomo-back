@@ -25,11 +25,8 @@ def main_filters(self, request):
             if 'event_type' in filters.keys():
                 queryset = event_type_contain_filter(data=filters, query_set=queryset)
 
-            #if 'has_ticket' in filters.keys(): #LO PUEDE HACER EL FRONT?
-
-
-            if 'ticket_price' in filters.keys(): #ANDA
-                queryset = ticket_price_order(data=filters, query_set=queryset)
+            if 'has_ticket' in filters.keys():
+                queryset = has_ticket_yes_filter(data=filters, query_set=queryset)
 
             serializer = EventSerializer(queryset, many=True)
             if 'start_date' in filters.keys():
@@ -71,13 +68,6 @@ def date_filter(data, query_set):
         print(duration)
     return duration """
 
-def event_type_contain_filter(data, query_set):
-    if 'event_type' in data.keys():
-        event_type = data['event_type']
-        event_filter_qs = query_set.filter(event_type__icontains=event_type)        
-        return event_filter_qs
-
-
 def event_name_contain_filter(data, query_set):
     """Recibe la request.data y si tiene atributo 'event_name' devuelve todos los eventos de la bbdd que -contengan- el valor del atributo en su 'event_name'.
 
@@ -92,7 +82,19 @@ def event_name_contain_filter(data, query_set):
         event_name = data['event_name']
         event_filter_qs = query_set.filter(event_name__icontains=event_name)        
         return event_filter_qs
+
+def event_type_contain_filter(data, query_set):
+    if 'event_type' in data.keys():
+        event_type = data['event_type']
+        event_filter_qs = query_set.filter(event_type__icontains=event_type)        
+        return event_filter_qs
     
+def has_ticket_yes_filter(data, query_set): #me devuelve lista vacía
+    if 'has_ticket' in data.keys():
+        if 'has_ticket' == True:
+            event_filter_qs = query_set.filter(has_ticket=True)
+            return event_filter_qs
+
 def replace_T_and_Z(serializer):
     """Reemplaza la T (time) y la Z (zone) del formato datetime por un espacio y nada respectivamente.  
 
@@ -107,38 +109,3 @@ def replace_T_and_Z(serializer):
             item['start_date'] = item['start_date'].replace('T', ' ').replace('Z', '')
             return serializer
 
-def ticket_price_order(data, query_set): #ANDA
-    if 'ticket_price' in data.keys():
-        event_filter_qs = query_set.order_by('-ticket_price')#si hiciera 'ticket_price' el ordenamiento sería descendente
-        return event_filter_qs
-    else:
-        return query_set
-####debería ser###
-def ticket_price_order_button(data, query_set, asc=True): #Cómo pido el parámetro asc?
-    """Función que ordena el atributo 'ticket_price' de forma ascendente o descendente
-
-    Args:
-        data (_type_): _description_
-        query_set (_type_): _description_
-        asc (bool, optional): _description_. Defaults to True.
-
-    Returns:
-        _type_: _description_
-    """
-    if 'ticket_price' in data.keys():
-        if asc == False:
-            event_filter_qs = query_set.order_by('-ticket_price')#si hiciera 'ticket_price' el ordenamiento sería descendente
-            return event_filter_qs
-        else:
-            event_filter_qs = query_set.order_by('ticket_price')
-    else:
-        return query_set
-
-
-
-""" def ticket_price_order(data, query_set):
-    if 'ticket_price' in data:
-        order_by_field = 'ticket_price' if data['ticket_price'] == 'asc' else '-ticket_price'
-        return query_set.order_by(order_by_field)
-    else:
-        return query_set """
