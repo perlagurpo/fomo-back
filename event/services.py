@@ -7,6 +7,30 @@ from .models import Event
 from .serializer import EventSerializer
 from rest_framework.response import Response
 
+def main_filters(self, request):
+            queryset = Event.objects
+
+            filters = request.data
+
+            if 'start_date' in filters.keys():
+                queryset = date_filter(data=filters, query_set=queryset)
+
+            if 'event_name' in filters.keys():
+                queryset = event_name_contain_filter(data=filters, query_set=queryset) 
+
+            #Agregar filtros de orden EJ: queryset = MiModelo.objects.order_by("-fecha")
+            #Cómo hago para recibir asc o desc en el request?? si no tendría que pedir que el click al botón en el front me mande otra cosa?
+            #También podría ser un filtro doble slide en el front que sea valores between
+            if 'ticket_price' in filters.keys(): #ANDA
+                queryset = ticket_price_order(data=filters, query_set=queryset)
+
+            serializer = EventSerializer(queryset, many=True)
+            if 'start_date' in filters.keys():
+                serializer = replace_T_and_Z(serializer)
+
+            return Response(serializer.data)          
+
+
 def date_filter(data, query_set):
     """Si la request tiene el atributo 'start_date' y este tiene como valor una lista(#EJ: "start_date":["01-01-2001", "01-01-2005"]) la función entiende que recibe un rango de fechas y aplica un filtro.
     Si la request.data tiene como valor una sola fecha realiza un filtro estricto devolviendo los eventos de la BBDD que tienen esa fecha.
