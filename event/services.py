@@ -15,6 +15,10 @@ def main_filters(self, request):
             if 'start_date' in filters.keys():
                 queryset = date_filter(data=filters, query_set=queryset)
 
+            if 'end_date' in filters.keys():
+                pass
+                #queryset = event_duration(data=filters, query_set=queryset)
+
             if 'event_name' in filters.keys():
                 queryset = event_name_contain_filter(data=filters, query_set=queryset) 
 
@@ -44,7 +48,7 @@ def date_filter(data, query_set):
     """
     if 'start_date' in data.keys():          
         start_date = data['start_date']
-        if type(start_date) == list:
+        if type(start_date) == list: #por si evento de varios días
             date_1 = start_date[0]
             date_2 = start_date[1]
             date_1 = datetime.strptime(date_1, '%d-%m-%Y')
@@ -55,6 +59,15 @@ def date_filter(data, query_set):
             fecha_start_obj = datetime.strptime(fecha_start, '%d-%m-%Y')
             event_filter_qs = query_set.filter(start_date=fecha_start_obj)
         return event_filter_qs
+
+""" def event_duration(data, query_set):
+    if 'start_date' and 'end_date' in data.keys():
+        start_date = data['start_date']
+        end_date = data['end_date']
+        duration = start_date - end_date
+        print(duration)
+    return duration """
+
 
 def event_name_contain_filter(data, query_set):
     """Recibe la request.data y si tiene atributo 'event_name' devuelve todos los eventos de la bbdd que -contengan- el valor del atributo en su 'event_name'.

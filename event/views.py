@@ -16,6 +16,7 @@ from rest_framework import generics
 from .models import Event
 from .serializer import EventSerializer
 from event.services import main_filters
+
 class UserViewSet(viewsets.ViewSet):
     """
     A simple ViewSet for listing or retrieving users.
