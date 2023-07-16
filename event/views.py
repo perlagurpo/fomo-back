@@ -15,7 +15,7 @@ from datetime import datetime
 from rest_framework import generics
 from .models import Event
 from .serializer import EventSerializer
-from event.services import main_filter
+from event.services import date_filter, event_name_contain_filter, replace_T_and_Z, ticket_price_order
 
 class UserViewSet(viewsets.ViewSet):
     """
@@ -27,13 +27,29 @@ class UserViewSet(viewsets.ViewSet):
             serializer = EventSerializer(queryset, many=True) #transforma de obj
             return Response(serializer.data) #retorna respuesta
         
-        ###filtranga################# TODO ESTO PARA ABAJO VA A UNA FUNCIÓN AL SERVICES
+        ###filtranga#################
         queryset = Event.objects
 
         if len(request.data.keys()) > 0:
-
             filters = request.data
-        return(main_filter())            
+
+            if 'start_date' in filters.keys():
+                queryset = date_filter(data=filters, query_set=queryset)
+
+            if 'event_name' in filters.keys():
+                queryset = event_name_contain_filter(data=filters, query_set=queryset) 
+
+            #Agregar filtros de orden EJ: queryset = MiModelo.objects.order_by("-fecha")
+            #Cómo hago para recibir asc o desc en el request?? si no tendría que pedir que el click al botón en el front me mande otra cosa?
+            #También podría ser un filtro doble slide en el front que sea valores between
+            if 'ticket_price' in filters.keys(): #ANDA
+                queryset = ticket_price_order(data=filters, query_set=queryset)
+
+            serializer = EventSerializer(queryset, many=True)
+            if 'start_date' in filters.keys():
+                serializer = replace_T_and_Z(serializer)
+
+            return Response(serializer.data)               
 
     def create(self, request): #si llega un POST request:
         serializer = EventSerializer(data=request.data)
