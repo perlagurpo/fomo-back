@@ -16,8 +16,8 @@ class Event(models.Model):
     event_img = models.CharField(max_length=255, null=True)
     organization_page = models.CharField(max_length=255, null=True)
     event_location = models.CharField(max_length=255, null=True)
-
+""" 
     owner = models.ForeignKey('auth.user', related_name='events') #on_delete=models.CASCADE?indica que si un usuario se elimina, todos sus fragmentos de código también se eliminarán.
 
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
+        super().save(*args, **kwargs) """
