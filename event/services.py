@@ -60,13 +60,18 @@ def date_filter(data, query_set):
             event_filter_qs = query_set.filter(start_date=fecha_start_obj)
         return event_filter_qs
 
-""" def event_duration(data, query_set):
+""" def event_duration(data, query_set, duration_input, more_or_less_or_equal):
     if 'start_date' and 'end_date' in data.keys():
         start_date = data['start_date']
         end_date = data['end_date']
         duration = start_date - end_date
+        if more_or_less_or_equal == 'more':
+
+        if more_or_less_or_equal == 'more':
+        if more_or_less_or_equal == 'more':
+
         print(duration)
-    return duration """
+    return str(duration) """
 
 def event_name_contain_filter(data, query_set):
     """Recibe la request.data y si tiene atributo 'event_name' devuelve todos los eventos de la bbdd que -contengan- el valor del atributo en su 'event_name'.

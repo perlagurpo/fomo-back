@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Event(models.Model):
@@ -16,6 +17,7 @@ class Event(models.Model):
     event_img = models.CharField(max_length=255, null=True)
     organization_page = models.CharField(max_length=255, null=True)
     event_location = models.CharField(max_length=255, null=True)
+    user_creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 """ 
     owner = models.ForeignKey('auth.user', related_name='events') #on_delete=models.CASCADE?indica que si un usuario se elimina, todos sus fragmentos de código también se eliminarán.
 

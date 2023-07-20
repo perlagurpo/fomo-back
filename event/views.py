@@ -17,6 +17,11 @@ from .models import Event
 from .serializer import EventSerializer
 from event.services import main_filters
 
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
+
+
 class UserViewSet(viewsets.ViewSet):
     """
     A simple ViewSet for listing or retrieving users.
@@ -30,9 +35,14 @@ class UserViewSet(viewsets.ViewSet):
         elif len(request.data.keys()) > 0:
             return main_filters(self, request)
 
-
+    @authentication_classes([SessionAuthentication])
+    @permission_classes([IsAuthenticated])
     def create(self, request): #si llega un POST request:
-        serializer = EventSerializer(data=request.data)
+        #create necesita auth, list no. Ver chatgpt
+        user = request.user
+        data = request.data
+        data['user_creator'] = user
+        serializer = EventSerializer(data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=201)
