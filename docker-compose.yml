@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+
+  app:
+    build: .
+    restart: always
+    ports:
+      - '8888:8000' #server:docker
