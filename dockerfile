@@ -8,8 +8,8 @@ ENV PYTHONUNBUFFERED 1
 
 # Update Linux
 RUN apt-get update \
-    && apt-get upgrade -y
+    && apt-get -y install libpq-dev gcc
 
 # Instalar dependencias
 COPY . /app
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir --upgrade -r requirements.txt

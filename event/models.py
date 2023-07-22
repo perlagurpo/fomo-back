@@ -18,6 +18,10 @@ class Event(models.Model):
     organization_page = models.CharField(max_length=255, null=True)
     event_location = models.CharField(max_length=255, null=True)
     user_creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return self.event_name
+
 """ 
     owner = models.ForeignKey('auth.user', related_name='events') #on_delete=models.CASCADE?indica que si un usuario se elimina, todos sus fragmentos de código también se eliminarán.
 

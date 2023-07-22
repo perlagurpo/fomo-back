@@ -1,9 +1,13 @@
 version: '3.8'
 
 services:
-
   app:
     build: .
     restart: always
     ports:
-      - '8888:8000' #server:docker
+      - '9000:8000'
+    environment:
+      - PYTHONPATH=/app
+    volumes:
+       - .:/app
+    command: python manage.py runserver 0.0.0.0:8000
