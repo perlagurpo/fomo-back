@@ -6,8 +6,7 @@ services:
     restart: always
     ports:
       - '9999:8000'
-    environment:
-      - PYTHONPATH=/app
+
     volumes:
        - .:/app
     command: python manage.py runserver 0.0.0.0:8000
