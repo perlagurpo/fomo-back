@@ -15,7 +15,7 @@ from datetime import datetime
 from rest_framework import generics
 from .models import Event
 from .serializer import EventSerializer
-from event.services import main_filters
+from event.services import main_filters, replace_T_and_Z
 
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication
@@ -29,11 +29,13 @@ class UserViewSet(viewsets.ViewSet):
     def list(self, request): #si llega una GET request:
         if len(request.data.keys()) == 0: #si llega sin pedir filtro muestra todo
             queryset = Event.objects.all() #bbdd a qs
-            serializer = EventSerializer(queryset, many=True) #transforma de obj
-            return Response(serializer.data) #retorna respuesta
-        
-        elif len(request.data.keys()) > 0:
-            return main_filters(self, request)
+        else:
+            queryset = main_filters(self, request)
+
+        serializer = EventSerializer(queryset, many=True) #transforma de obj
+        serializer = replace_T_and_Z(serializer=serializer)
+        return Response(serializer.data) #retorna respuesta
+
 
     @authentication_classes([SessionAuthentication])
     @permission_classes([IsAuthenticated])
@@ -42,6 +44,11 @@ class UserViewSet(viewsets.ViewSet):
         user = request.user
         data = request.data
         data['user_creator'] = user
+
+        image = data.pop('image')
+        image_path = ''#guardar imagen en carpeta estatica
+        data['image'] = image_path
+
         serializer = EventSerializer(data)
         if serializer.is_valid():
             serializer.save()
