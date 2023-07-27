@@ -51,18 +51,6 @@ def date_filter(date, query_set):
     event_filter_qs = query_set.filter(start_date__range=[date_start, date_end])
     return event_filter_qs
 
-""" def event_duration(data, query_set, duration_input, more_or_less_or_equal):
-    if 'start_date' and 'end_date' in data.keys():
-        start_date = data['start_date']
-        end_date = data['end_date']
-        duration = start_date - end_date
-        if more_or_less_or_equal == 'more':
-
-        if more_or_less_or_equal == 'more':
-        if more_or_less_or_equal == 'more':
-
-        print(duration)
-    return str(duration) """
 
 def event_name_contain_filter(data, query_set):
     """Recibe la request.data y si tiene atributo 'event_name' devuelve todos los eventos de la bbdd que -contengan- el valor del atributo en su 'event_name'.
@@ -79,17 +67,17 @@ def event_name_contain_filter(data, query_set):
         event_filter_qs = query_set.filter(event_name__icontains=event_name)        
         return event_filter_qs
 
-def event_type_contain_filter(data, query_set):
-    if 'event_type' in data.keys():
-        event_type = data['event_type']
-        event_filter_qs = query_set.filter(event_type__icontains=event_type)        
-        return event_filter_qs
+# def event_type_contain_filter(data, query_set):
+#     if 'event_type' in data.keys():
+#         event_type = data['event_type']
+#         event_filter_qs = query_set.filter(event_type__icontains=event_type)        
+#         return event_filter_qs
     
-def has_ticket_yes_filter(data, query_set): #me devuelve lista vacía
-    if 'has_ticket' in data.keys():
-        if 'has_ticket' == True:
-            event_filter_qs = query_set.filter(has_ticket=True)
-            return event_filter_qs
+# def has_ticket_yes_filter(data, query_set): #me devuelve lista vacía
+#     if 'has_ticket' in data.keys():
+#         if 'has_ticket' == True:
+#             event_filter_qs = query_set.filter(has_ticket=True)
+#             return event_filter_qs
 
 
 def replace_T_and_Z(serializer):

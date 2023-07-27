@@ -21,14 +21,20 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 
+from django.db.models import Q
+from django.shortcuts import render
+
 
 class UserViewSet(viewsets.ViewSet):
     """
     A simple ViewSet for listing or retrieving users.
     """
     def list(self, request): #si llega una GET request:
+        now = datetime.now()
         if len(request.query_params.keys()) == 0: #si llega sin pedir filtro muestra todo
-            queryset = Event.objects.all() #bbdd a qs
+            queryset = Event.objects.filter(start_date__gte=now) #bbdd a qs
+            #queryset = queryset.filter(Q(start_date__lte=now) & Q(end_date__gte=now))
+            #queryset = queryset.order_by('start_date')
         else:
             queryset = main_filters(self, request)
 
@@ -37,17 +43,17 @@ class UserViewSet(viewsets.ViewSet):
         return Response(serializer.data) #retorna respuesta
 
 
-    @authentication_classes([SessionAuthentication])
-    @permission_classes([IsAuthenticated])
+    #@authentication_classes([SessionAuthentication])
+    #@permission_classes([IsAuthenticated])
     def create(self, request): #si llega un POST request:
         #create necesita auth, list no. Ver chatgpt
         user = request.user
-        data = request.query_params.dict()
-        data['user_creator'] = user
+        data = request.data
+        #data['user_creator'] = user # "Incorrect type. Expected pk value, received AnonymousUser."
 
-        image = data.pop('image')
-        image_path = ''#guardar imagen en carpeta estatica
-        data['image'] = image_path
+        #image = data.pop('image')
+        #image_path = ''#guardar imagen en carpeta estatica
+        #data['image'] = image_path
 
         serializer = EventSerializer(data=data)
         if serializer.is_valid():
