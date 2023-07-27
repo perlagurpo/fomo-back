@@ -47,13 +47,14 @@ class UserViewSet(viewsets.ViewSet):
     #@permission_classes([IsAuthenticated])
     def create(self, request): #si llega un POST request:
         #create necesita auth, list no. Ver chatgpt
-        user = request.user
+        #user = request.user
         data = request.data
-        #data['user_creator'] = user # "Incorrect type. Expected pk value, received AnonymousUser."
-
-        #image = data.pop('image')
-        #image_path = ''#guardar imagen en carpeta estatica
-        #data['image'] = image_path
+        # if user is not 'AnonymusUser':
+        #     data['user_creator'] = user # "Incorrect type. Expected pk value, received AnonymousUser."
+        # if request.data['image'] is not None:
+        #     image = data.pop('image')
+        #     image_path = ''#guardar imagen en carpeta estatica
+        #     data['image'] = image_path
 
         serializer = EventSerializer(data=data)
         if serializer.is_valid():
