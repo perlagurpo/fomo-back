@@ -9,7 +9,7 @@ from rest_framework.response import Response
 def main_filters(self, request):
             queryset = Event.objects
 
-            filters = request.data
+            filters = request.query_params
 
             if 'start_date' in filters.keys():
                 queryset = date_filter(date=filters['start_date'], query_set=queryset)

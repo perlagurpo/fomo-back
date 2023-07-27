@@ -27,7 +27,7 @@ class UserViewSet(viewsets.ViewSet):
     A simple ViewSet for listing or retrieving users.
     """
     def list(self, request): #si llega una GET request:
-        if len(request.data.keys()) == 0: #si llega sin pedir filtro muestra todo
+        if len(request.query_params.keys()) == 0: #si llega sin pedir filtro muestra todo
             queryset = Event.objects.all() #bbdd a qs
         else:
             queryset = main_filters(self, request)
@@ -42,14 +42,14 @@ class UserViewSet(viewsets.ViewSet):
     def create(self, request): #si llega un POST request:
         #create necesita auth, list no. Ver chatgpt
         user = request.user
-        data = request.data
+        data = request.query_params.dict()
         data['user_creator'] = user
 
         image = data.pop('image')
         image_path = ''#guardar imagen en carpeta estatica
         data['image'] = image_path
 
-        serializer = EventSerializer(data)
+        serializer = EventSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=201)
