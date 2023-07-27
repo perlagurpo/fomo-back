@@ -32,7 +32,7 @@ class UserViewSet(viewsets.ViewSet):
     def list(self, request): #si llega una GET request:
         now = datetime.now()
         if len(request.query_params.keys()) == 0: #si llega sin pedir filtro muestra todo
-            queryset = Event.objects.filter(start_date__gte=now) #bbdd a qs
+            queryset = Event.objects.filter(Q(start_date__gt=now) | (Q(start_date__lt=now) & Q(end_date__gt=now)))
             #queryset = queryset.filter(Q(start_date__lte=now) & Q(end_date__gte=now))
             #queryset = queryset.order_by('start_date')
         else:
