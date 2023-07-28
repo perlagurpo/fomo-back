@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.timezone import timezone, utc, now
 
 # Create your models here.
 class Event(models.Model):
@@ -18,6 +19,9 @@ class Event(models.Model):
     organization_page = models.CharField(max_length=255, null=True)
     event_location = models.CharField(max_length=255, null=True)
     user_creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+
+    class Meta:
+        ordering = ['start_date']
 
     def __str__(self):
         return self.event_name

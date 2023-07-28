@@ -17,7 +17,7 @@ from rest_framework import generics
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from django.db.models import Q
+from django.db.models import Q, F
 from rest_framework.pagination import PageNumberPagination
 class UserPagination(PageNumberPagination):
     page_size = 10
@@ -26,14 +26,14 @@ class UserPagination(PageNumberPagination):
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = EventSerializer
     pagination_class = UserPagination
-
+    #ordering = ['-start_date']
     
     def list(self, request): #si llega una GET request:
         now = datetime.now()
         if len(request.query_params.keys()) == 0: 
             queryset = Event.objects.filter(
                 Q(start_date__gt=now) | (Q(start_date__lt=now) & Q(end_date__gt=now))
-            ).order_by('start_date')
+            ).order_by(F('start_date').asc(nulls_last=True))
         else:
             queryset = main_filters(self, request)
 
