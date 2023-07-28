@@ -25,6 +25,11 @@ class Event(models.Model):
 
     def __str__(self):
         return self.event_name
+    
+    def get_weekday_name(self):
+        if self.start_date:
+            return self.start_date.strftime('%A')
+        return None
 
 """ 
     owner = models.ForeignKey('auth.user', related_name='events') #on_delete=models.CASCADE?indica que si un usuario se elimina, todos sus fragmentos de código también se eliminarán.
