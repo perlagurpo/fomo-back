@@ -23,24 +23,29 @@ from rest_framework.permissions import IsAuthenticated
 
 from django.db.models import Q
 from django.shortcuts import render
+from rest_framework.pagination import PageNumberPagination
+class UserPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = EventSerializer
+    pagination_class = UserPagination
 
-
-class UserViewSet(viewsets.ViewSet):
-    """
-    A simple ViewSet for listing or retrieving users.
-    """
     def list(self, request): #si llega una GET request:
         now = datetime.now()
-        if len(request.query_params.keys()) == 0: #si llega sin pedir filtro muestra todo
+        if len(request.query_params.keys()) == 0: 
             queryset = Event.objects.filter(
                 Q(start_date__gt=now) | (Q(start_date__lt=now) & Q(end_date__gt=now))
             ).order_by('start_date')
         else:
             queryset = main_filters(self, request)
 
-        serializer = EventSerializer(queryset, many=True) #transforma de obj
-        serializer = replace_T_and_Z(serializer=serializer)
-        return Response(serializer.data) #retorna respuesta
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True) #transforma de obj
+            serializer = replace_T_and_Z(serializer=serializer)
+            return self.get_paginated_response(serializer.data) #retorna respuesta
 
 
     #@authentication_classes([SessionAuthentication])
