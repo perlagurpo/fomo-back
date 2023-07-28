@@ -7,31 +7,19 @@ from .serializer import EventSerializer
 from rest_framework.response import Response
 
 def main_filters(self, request):
-            queryset = Event.objects
+    queryset = Event.objects.all()
 
-            filters = request.query_params
+    filters_data = request.query_params
 
-            if 'start_date' in filters.keys():
-                queryset = date_filter(date=filters['start_date'], query_set=queryset)
+    if 'start_date' in filters_data.keys():
+        queryset = date_filter(date=filters_data['start_date'], query_set=queryset)
 
-            if 'event_name' in filters.keys():
-                queryset = event_name_contain_filter(data=filters, query_set=queryset) 
-
-            return queryset
-
-            if 'event_type' in filters.keys():
-                queryset = event_type_contain_filter(data=filters, query_set=queryset)
-
-            if 'has_ticket' in filters.keys():
-                queryset = has_ticket_yes_filter(data=filters, query_set=queryset)
-
-            serializer = EventSerializer(queryset, many=True)
-            if 'start_date' in filters.keys():
-                serializer = replace_T_and_Z(serializer)
+    if 'event_name' in filters_data.keys():
+        queryset = event_name_contain_filter(data=filters_data, query_set=queryset) 
 
 
-
-            return Response(serializer.data)          
+    return queryset
+    
 
 
 def date_filter(date, query_set):

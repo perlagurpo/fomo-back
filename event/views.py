@@ -32,6 +32,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = EventSerializer
     pagination_class = UserPagination
 
+    
     def list(self, request): #si llega una GET request:
         now = datetime.now()
         if len(request.query_params.keys()) == 0: 
@@ -41,11 +42,10 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         else:
             queryset = main_filters(self, request)
 
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True) #transforma de obj
-            serializer = replace_T_and_Z(serializer=serializer)
-            return self.get_paginated_response(serializer.data) #retorna respuesta
+        paginated_queryset = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(paginated_queryset, many=True)
+        serializer = replace_T_and_Z(serializer=serializer)
+        return self.get_paginated_response(serializer.data)
 
 
     #@authentication_classes([SessionAuthentication])
