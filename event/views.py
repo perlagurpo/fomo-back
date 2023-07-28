@@ -34,6 +34,8 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = Event.objects.filter(
                 Q(start_date__gt=now) | (Q(start_date__lt=now) & Q(end_date__gt=now))
             ).order_by('start_date')
+            # if not queryset.query.order_by:
+            #     queryset = queryset.order_by('start_date')
         else:
             queryset = main_filters(self, request)
 
