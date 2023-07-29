@@ -9,13 +9,14 @@ class EventSerializer(serializers.ModelSerializer):
         model=Event
         #fields=('fullname','nickname') #Indicando los campos individualmente
         fields = [
+            'id',
             'event_img',
             'event_name',
             'day_name',
             'start_date',
             'end_date',
             'event_location',
-            'ticket_price'
+            'ticket_price',
 
         ]
         #todos los campos
