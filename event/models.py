@@ -23,19 +23,25 @@ class Event(models.Model):
     organization_page = models.CharField(max_length=255, null=True)
     event_location = models.CharField(max_length=255, null=True)
     user_creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)#esto no me gusta
-    highlighted = models.BooleanField(default=False)
+    #highlighted = models.BooleanField(default=False)
 
 
     class Meta:
         ordering = ['start_date']
 
-    def __str__(self):
-        return self.event_name
-    
-    def get_weekday_name(self):
+    @property
+    def day_name(self):
         if self.start_date:
             return self.start_date.strftime('%A')
         return None
+
+    def __str__(self):
+        return self.event_name
+    
+    # def get_weekday_name(self):
+    #     if self.start_date:
+    #         return self.start_date.strftime('%A')
+    #     return None
     
 
 """ 

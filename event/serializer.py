@@ -8,7 +8,17 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model=Event
         #fields=('fullname','nickname') #Indicando los campos individualmente
-        fields = '__all__' #todos los campos
+        fields = [
+            'event_img',
+            'event_name',
+            'day_name',
+            'start_date',
+            'end_date',
+            'event_location',
+            'ticket_price'
+
+        ]
+        #todos los campos
 
 
 class UserSerializer(serializers.ModelSerializer):

@@ -30,12 +30,14 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     
     def list(self, request): #si llega una GET request:
         now = datetime.now()
-        if len(request.query_params.keys()) == 0: 
+        if len(request.query_params.keys()) == 0:
             queryset = Event.objects.filter(
                 Q(start_date__gt=now) | (Q(start_date__lt=now) & Q(end_date__gt=now))
             ).order_by(F('start_date').asc(nulls_last=True))
         else:
             queryset = main_filters(self, request)
+
+
 
         paginated_queryset = self.paginate_queryset(queryset)
         serializer = self.get_serializer(paginated_queryset, many=True)
