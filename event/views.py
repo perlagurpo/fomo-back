@@ -25,8 +25,8 @@ class UserPagination(PageNumberPagination):
     max_page_size = 100
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = EventSerializer
-    pagination_class = UserPagination
-    #ordering = ['-start_date']
+    pagination_class = UserPagination  
+    queryset = Event.objects.all()
     
     def list(self, request): #si llega una GET request:
         now = datetime.now()

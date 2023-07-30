@@ -19,7 +19,7 @@ class Event(models.Model):
     tickets_available = models.IntegerField(null=True)
     buy_tickets = models.CharField(max_length=255, null=True)
     event_link = models.CharField(max_length=255, null=True)
-    event_img = models.CharField(max_length=255, null=True)
+    event_img = models.ImageField(max_length=255, null=True, upload_to='images/')
     organization_page = models.CharField(max_length=255, null=True)
     event_location = models.CharField(max_length=255, null=True)
     user_creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)#esto no me gusta
