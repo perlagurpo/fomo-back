@@ -15,6 +15,7 @@ class EventSerializer(serializers.ModelSerializer):
             'day_name',
             'event_name',
             'event_img',
+            'image_url',
             'event_location',
             'ticket_price',
         ]

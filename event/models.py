@@ -38,6 +38,11 @@ class Event(models.Model):
     def __str__(self):
         return self.event_name
     
+    def image_url(self):
+        if self.event_img:
+            return self.event_img.url
+        return None
+    
     # def get_weekday_name(self):
     #     if self.start_date:
     #         return self.start_date.strftime('%A')
