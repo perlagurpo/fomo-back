@@ -14,10 +14,10 @@ from pathlib import Path
 # import locale
 # from django.utils import timezone
 
-# # Configura el idioma en español de Argentina
+# # # Configura el idioma en español de Argentina
 # locale.setlocale(locale.LC_TIME, 'es_AR.UTF-8')
 
-# # Configura la zona horaria en Buenos Aires, Argentina
+# # # Configura la zona horaria en Buenos Aires, Argentina
 # timezone.activate("America/Argentina/Buenos_Aires")
 
 
@@ -117,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-AR'
 
 TIME_ZONE = 'UTC'
 

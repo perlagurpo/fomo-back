@@ -33,11 +33,37 @@ class Event(models.Model):
     @property
     def day_name(self):
         if self.start_date:
-            #Establece idioma español
-            # locale.setlocale(locale.LC_TIME, 'es_AR')
+            # Establece idioma español
+            #locale.setlocale(locale.LC_TIME, 'es_AR')
             # Formatear la fecha y obtener el nombre del día... ahora en es
             return self.start_date.strftime('%A')
         return None
+    
+    def translate_day(day_name):
+        match day_name:
+            case "Monday":
+                return "Lunes"
+
+            case "Tuesday":
+                return "Martes"
+
+            case "Wednesday":
+                return "Miércoles"
+            
+            case "Thursday":
+                return "Jueves"
+
+            case "Friday":
+                return "Viernes"
+            
+            case "Saturday":
+                return "Sábado"
+            
+            case "Sunday":
+                return "Domingo"
+            
+    translated_day = translate_day(day_name)
+
 
     def __str__(self):
         return self.event_name
@@ -46,15 +72,3 @@ class Event(models.Model):
         if self.event_img:
             return self.event_img.url
         return None
-    
-    # def get_weekday_name(self):
-    #     if self.start_date:
-    #         return self.start_date.strftime('%A')
-    #     return None
-    
-
-""" 
-    owner = models.ForeignKey('auth.user', related_name='events') #on_delete=models.CASCADE?indica que si un usuario se elimina, todos sus fragmentos de código también se eliminarán.
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs) """

@@ -13,6 +13,7 @@ class EventSerializer(serializers.ModelSerializer):
             'start_date',
             'end_date',
             'day_name',
+            'translated_day',
             'event_name',
             'event_img',
             'image_url',
