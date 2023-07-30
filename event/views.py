@@ -37,12 +37,20 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         else:
             queryset = main_filters(self, request)
 
-
-
         paginated_queryset = self.paginate_queryset(queryset)
         serializer = self.get_serializer(paginated_queryset, many=True)
         serializer = replace_T_and_Z(serializer=serializer)
         return self.get_paginated_response(serializer.data)
+
+    # def retrieve(self, request, pk=None):
+    #     try:
+    #         event = Event.objects.get(pk=pk)
+    #     except Event.DoesNotExist:
+    #         return Response({"detail": "Evento no encontrado."}, status=404)
+
+    #     serializer = self.get_serializer(event)
+    #     serializer = replace_T_and_Z(serializer=serializer)
+    #     return Response(serializer.data)
 
 
     #@authentication_classes([SessionAuthentication])
