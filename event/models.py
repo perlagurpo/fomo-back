@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-from datetime import date
+from datetime import datetime
+import locale
 
 # Create your models here.
 class Event(models.Model):
@@ -32,6 +33,9 @@ class Event(models.Model):
     @property
     def day_name(self):
         if self.start_date:
+            #Establece idioma español
+            # locale.setlocale(locale.LC_TIME, 'es_AR')
+            # Formatear la fecha y obtener el nombre del día... ahora en es
             return self.start_date.strftime('%A')
         return None
 
