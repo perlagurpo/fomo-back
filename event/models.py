@@ -34,35 +34,11 @@ class Event(models.Model):
     def day_name(self):
         if self.start_date:
             # Establece idioma español
-            #locale.setlocale(locale.LC_TIME, 'es_AR')
+            locale.setlocale(locale.LC_ALL, 'es')
+            locale.getlocale(locale.LC_TIME)
             # Formatear la fecha y obtener el nombre del día... ahora en es
             return self.start_date.strftime('%A')
         return None
-    
-    def translate_day(day_name):
-        match day_name:
-            case "Monday":
-                return "Lunes"
-
-            case "Tuesday":
-                return "Martes"
-
-            case "Wednesday":
-                return "Miércoles"
-            
-            case "Thursday":
-                return "Jueves"
-
-            case "Friday":
-                return "Viernes"
-            
-            case "Saturday":
-                return "Sábado"
-            
-            case "Sunday":
-                return "Domingo"
-            
-    translated_day = translate_day(day_name)
 
 
     def __str__(self):
