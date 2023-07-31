@@ -8,20 +8,20 @@ import locale
 # Create your models here.
 class Event(models.Model):
     # Atributos de la clase Event
-    start_date = models.DateTimeField(null=True) #YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] lo que está entre corchetes es opcional.
-    end_date = models.DateTimeField(null=True)
+    start_date = models.DateTimeField(null=True, blank=True) #YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] lo que está entre corchetes es opcional.
+    end_date = models.DateTimeField(null=True, blank=True)
     event_name = models.CharField(max_length=255)
-    event_type = models.CharField(max_length=255, null=True)
-    has_ticket = models.BooleanField(null=True)
-    ticket_price = models.IntegerField(null=True)
-    tickets_left = models.BooleanField(null=True)
-    tickets_available = models.IntegerField(null=True)
-    buy_tickets = models.CharField(max_length=255, null=True)
-    event_link = models.CharField(max_length=255, null=True)
-    event_img = models.ImageField(max_length=255, null=True, upload_to='images/')
-    organization_page = models.CharField(max_length=255, null=True)
-    event_location = models.CharField(max_length=255, null=True)
-    user_creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)#esto no me gusta
+    event_type = models.CharField(max_length=255, null=True, blank=True)
+    has_ticket = models.BooleanField(null=True, blank=True)
+    ticket_price = models.IntegerField(null=True, blank=True)
+    tickets_left = models.BooleanField(null=True, blank=True)
+    tickets_available = models.IntegerField(null=True, blank=True)
+    buy_tickets = models.CharField(max_length=255, null=True, blank=True)
+    event_link = models.CharField(max_length=255, null=True, blank=True)
+    event_img = models.ImageField(max_length=255, null=True, upload_to='images/', blank=True)
+    organization_page = models.CharField(max_length=255, null=True, blank=True)
+    event_location = models.CharField(max_length=255, null=True, blank=True)
+    user_creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, blank=True)#esto no me gusta
     highlighted = models.BooleanField(default=False, blank=True, null=True)#excluido del panel de creación en admin.py
 
 
