@@ -8,7 +8,7 @@ import locale
 # Create your models here.
 class Event(models.Model):
     # Atributos de la clase Event
-    start_date = models.DateTimeField(null=True, blank=True) #YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] lo que está entre corchetes es opcional.
+    start_date = models.DateTimeField() #YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] lo que está entre corchetes es opcional.
     end_date = models.DateTimeField(null=True, blank=True)
     event_name = models.CharField(max_length=255)
     event_type = models.CharField(max_length=255, null=True, blank=True)
@@ -18,11 +18,11 @@ class Event(models.Model):
     tickets_available = models.IntegerField(null=True, blank=True)
     buy_tickets = models.CharField(max_length=255, null=True, blank=True)
     event_link = models.CharField(max_length=255, null=True, blank=True)
-    event_img = models.ImageField(max_length=255, null=True, upload_to='images/', blank=True)
+    event_img = models.ImageField(max_length=255, upload_to='images/')
     organization_page = models.CharField(max_length=255, null=True, blank=True)
-    event_location = models.CharField(max_length=255, null=True, blank=True)
+    event_location = models.CharField(max_length=255)
     user_creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, blank=True)#esto no me gusta
-    highlighted = models.BooleanField(default=False, blank=True, null=True)#excluido del panel de creación en admin.py
+    highlighted = models.BooleanField(default=False)#excluido del panel de creación en admin.py
 
 
     class Meta:
