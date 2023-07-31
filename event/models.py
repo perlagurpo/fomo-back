@@ -9,9 +9,7 @@ import locale
 class Event(models.Model):
     # Atributos de la clase Event
     start_date = models.DateTimeField(null=True) #YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] lo que está entre corchetes es opcional.
-    #day_of_week_start = models.CharField(max_length=10, blank=True, null=True)  # Atributo para almacenar el día del evento
     end_date = models.DateTimeField(null=True)
-    #day_of_week_end = models.CharField(max_length=10, blank=True, null=True)
     event_name = models.CharField(max_length=255)
     event_type = models.CharField(max_length=255, null=True)
     has_ticket = models.BooleanField(null=True)
@@ -24,20 +22,30 @@ class Event(models.Model):
     organization_page = models.CharField(max_length=255, null=True)
     event_location = models.CharField(max_length=255, null=True)
     user_creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)#esto no me gusta
-    highlighted = models.BooleanField(default=False)#excluido del panel de creación en admin.py
+    highlighted = models.BooleanField(default=False, blank=True, null=True)#excluido del panel de creación en admin.py
 
 
     class Meta:
         ordering = ['start_date']
 
     @property
-    def day_name(self):
+    def day_name_start(self):
         if self.start_date:
             # Establece idioma español
             locale.setlocale(locale.LC_ALL, 'es_AR.utf8') #validar con el "locale -a"
             locale.getlocale(locale.LC_TIME)
             # Formatear la fecha y obtener el nombre del día... ahora en es
             return self.start_date.strftime('%A').capitalize()
+        return None
+    
+    @property
+    def day_name_end(self):
+        if self.start_date:
+            # Establece idioma español
+            locale.setlocale(locale.LC_ALL, 'es_AR.utf8') #validar con el "locale -a"
+            locale.getlocale(locale.LC_TIME)
+            # Formatear la fecha y obtener el nombre del día... ahora en es
+            return self.end_date.strftime('%A').capitalize()
         return None
 
 

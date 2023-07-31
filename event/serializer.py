@@ -12,12 +12,14 @@ class EventSerializer(serializers.ModelSerializer):
             'id',
             'start_date',
             'end_date',
-            'day_name',
+            'day_name_start',
+            'day_name_end',
             'event_name',
             'event_img',
             'image_url',
             'event_location',
             'ticket_price',
+            'highlighted',
         ]
         #todos los campos
 

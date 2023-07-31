@@ -55,7 +55,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 
     #@authentication_classes([SessionAuthentication])
     #@permission_classes([IsAuthenticated])
-    def create(self, request): #si llega un POST request:
+    def create(self, request):
         #create necesita auth, list no. Ver chatgpt
         #user = request.user
         data = request.data
