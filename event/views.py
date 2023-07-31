@@ -54,25 +54,25 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     #     return Response(serializer.data)
 
 
-@authentication_classes([SessionAuthentication])
-@permission_classes([IsAuthenticated])
-class CreateEventView(generics.CreateAPIView):
-    serializer_class = EventSerializer
+# @authentication_classes([SessionAuthentication])
+# @permission_classes([IsAuthenticated])
+# class CreateEventView(generics.CreateAPIView):
+#     serializer_class = EventSerializer
 
 
-    def create(self, request):
-        #create necesita auth, list no. Ver chatgpt
-        #user = request.user
-        data = request.data
-        # if user is not 'AnonymusUser':
-        #     data['user_creator'] = user # "Incorrect type. Expected pk value, received AnonymousUser."
-        # if request.data['image'] is not None:
-        #     image = data.pop('image')
-        #     image_path = ''#guardar imagen en carpeta estatica
-        #     data['image'] = image_path
+#     def create(self, request):
+#         #create necesita auth, list no. Ver chatgpt
+#         #user = request.user
+#         data = request.data
+#         # if user is not 'AnonymusUser':
+#         #     data['user_creator'] = user # "Incorrect type. Expected pk value, received AnonymousUser."
+#         # if request.data['image'] is not None:
+#         #     image = data.pop('image')
+#         #     image_path = ''#guardar imagen en carpeta estatica
+#         #     data['image'] = image_path
 
-        serializer = EventSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
+#         serializer = EventSerializer(data=data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=201)
+#         return Response(serializer.errors, status=400)
