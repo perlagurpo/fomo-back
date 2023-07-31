@@ -24,7 +24,7 @@ class Event(models.Model):
     organization_page = models.CharField(max_length=255, null=True)
     event_location = models.CharField(max_length=255, null=True)
     user_creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)#esto no me gusta
-    #highlighted = models.BooleanField(default=False)
+    highlighted = models.BooleanField(default=False)#excluido del panel de creación en admin.py
 
 
     class Meta:
@@ -37,7 +37,7 @@ class Event(models.Model):
             locale.setlocale(locale.LC_ALL, 'es_AR.utf8') #validar con el "locale -a"
             locale.getlocale(locale.LC_TIME)
             # Formatear la fecha y obtener el nombre del día... ahora en es
-            return self.start_date.strftime('%A')
+            return self.start_date.strftime('%A').capitalize()
         return None
 
 
