@@ -19,6 +19,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from django.db.models import Q, F
 from rest_framework.pagination import PageNumberPagination
+
 class UserPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = 'page_size'
@@ -53,8 +54,12 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     #     return Response(serializer.data)
 
 
-    #@authentication_classes([SessionAuthentication])
-    #@permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
+class CreateEventView(generics.CreateAPIView):
+    serializer_class = EventSerializer
+
+
     def create(self, request):
         #create necesita auth, list no. Ver chatgpt
         #user = request.user
