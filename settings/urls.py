@@ -22,6 +22,7 @@ from django.views.static import serve
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('event/', include('event.urls')),
+    path('category/', include('category.urls')),
 ]
 # Ruta para servir imágenes desde MEDIA_ROOT
 urlpatterns += [

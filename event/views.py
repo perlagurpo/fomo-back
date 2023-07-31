@@ -1,29 +1,19 @@
-from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
-from event.serializer import EventSerializer
 from rest_framework import viewsets
-from rest_framework.response import Response
-from event.models import Event
 from datetime import datetime
-
 
 from .models import Event
 from .serializer import EventSerializer
 from event.services import main_filters, replace_T_and_Z
-
-from rest_framework.decorators import authentication_classes, permission_classes
-#para el refactor?
-from rest_framework import generics
-from rest_framework.authentication import SessionAuthentication
-from rest_framework.permissions import IsAuthenticated
-
 from django.db.models import Q, F
 from rest_framework.pagination import PageNumberPagination
+
 
 class UserPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = 'page_size'
     max_page_size = 100
+
+
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = EventSerializer
     pagination_class = UserPagination  

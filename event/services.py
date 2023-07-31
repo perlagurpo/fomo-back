@@ -21,7 +21,11 @@ def main_filters(self, request):
     
 
 
-def date_filter(date, query_set):
+def date_filter(
+        query_set,
+        start_date:datetime.datetime,
+        end_date: datetime.datetime =None
+):
     """Si la request tiene el atributo 'start_date' y este tiene como valor una lista(#EJ: "start_date":["01-01-2001", "01-01-2005"]) la función entiende que recibe un rango de fechas y aplica un filtro.
     Si la request.data tiene como valor una sola fecha realiza un filtro estricto devolviendo los eventos de la BBDD que tienen esa fecha.
 
@@ -32,9 +36,12 @@ def date_filter(date, query_set):
     Returns:
         object collection: el queryset filtrado.
     """
-    date_formated = datetime.datetime.strptime(date, '%d-%m-%Y')
+    date_formated = datetime.datetime.strptime(start_date, '%d-%m-%Y')
     date_start = datetime.datetime.combine(date_formated, datetime.time.min)
     date_end = datetime.datetime.combine(date_formated, datetime.time.max)
+    if end_date:
+        days_delta = date_start.day - end_date.day
+        date_end += datetime.timedelta(days=days_delta)
     event_filter_qs = query_set.filter(start_date__range=[date_start, date_end])
     return event_filter_qs
 
