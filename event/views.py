@@ -1,5 +1,6 @@
 from rest_framework import viewsets
 from datetime import datetime
+from rest_framework.response import Response
 
 from .models import Event
 from .serializer import EventSerializer
@@ -31,7 +32,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         paginated_queryset = self.paginate_queryset(queryset)
         serializer = self.get_serializer(paginated_queryset, many=True)
         serializer = replace_T_and_Z(serializer=serializer)
-        return self.get_paginated_response(serializer.data)
+        return Response(status=200, data=serializer.data)
 
     # def retrieve(self, request, pk=None):
     #     try:

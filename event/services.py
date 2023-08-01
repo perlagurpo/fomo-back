@@ -12,7 +12,11 @@ def main_filters(self, request):
     filters_data = request.query_params
 
     if 'start_date' in filters_data.keys():
-        queryset = date_filter(date=filters_data['start_date'], query_set=queryset)
+        queryset = date_filter(
+            start_date=filters_data['start_date'],
+            end_date=filters_data.get('end_date', None),
+            query_set=queryset
+        )
 
     if 'event_name' in filters_data.keys():
         queryset = event_name_contain_filter(data=filters_data, query_set=queryset) 
@@ -40,8 +44,8 @@ def date_filter(
     date_start = datetime.datetime.combine(date_formated, datetime.time.min)
     date_end = datetime.datetime.combine(date_formated, datetime.time.max)
     if end_date:
-        days_delta = date_start.day - end_date.day
-        date_end += datetime.timedelta(days=days_delta)
+        end_date_formated = datetime.datetime.strptime(end_date, '%d-%m-%Y')
+        date_end = datetime.datetime.combine(end_date_formated, datetime.time.max)
     event_filter_qs = query_set.filter(start_date__range=[date_start, date_end])
     return event_filter_qs
 
