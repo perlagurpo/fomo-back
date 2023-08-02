@@ -30,3 +30,9 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', ''] #??
+
+class EventDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Event
+        fields = '__all__'
+    

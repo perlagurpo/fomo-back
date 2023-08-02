@@ -3,13 +3,13 @@ from datetime import datetime
 from rest_framework.response import Response
 
 from .models import Event
-from .serializer import EventSerializer
+from .serializer import EventSerializer, EventDetailSerializer
 from event.services import get_event_by_query_params, replace_T_and_Z
 from django.db.models import Q, F
 from rest_framework.pagination import PageNumberPagination
 
 
-class UserPagination(PageNumberPagination):
+class EventPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = 'page_size'
     max_page_size = 100
@@ -17,7 +17,7 @@ class UserPagination(PageNumberPagination):
 
 class EventListView(generics.GenericAPIView):
     serializer_class = EventSerializer
-    pagination_class = UserPagination  
+    pagination_class = EventPagination  
     queryset = Event.objects.all()
 
     def get(self, request):
@@ -30,9 +30,11 @@ class EventListView(generics.GenericAPIView):
 
 
 class EventDetailView(generics.RetrieveAPIView):
-    serializer_class = EventSerializer
+    serializer_class = EventDetailSerializer
     queryset = Event.objects.all()
     lookup_field = 'pk'
+
+
 
 
 # @authentication_classes([SessionAuthentication])

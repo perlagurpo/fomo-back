@@ -4,6 +4,7 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from datetime import datetime
 import locale
+from category.models import Category
 
 # Create your models here.
 class Event(models.Model):
@@ -23,6 +24,7 @@ class Event(models.Model):
     event_location = models.CharField(max_length=255)
     user_creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, blank=True)#esto no me gusta
     highlighted = models.BooleanField(default=False)#excluido del panel de creación en admin.py
+    category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL, blank=True)
 
 
     class Meta:
