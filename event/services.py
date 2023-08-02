@@ -1,28 +1,36 @@
 #####Acá van las funciones para que las llame de otros lugares y quede más prolijo###
 import datetime
-from event.serializer import EventSerializer
-from rest_framework import filters
 from .models import Event
-from .serializer import EventSerializer
-from rest_framework.response import Response
+from django.db.models import Q, F
 
-def main_filters(self, request):
+
+
+def get_event_by_query_params(query_params):
+    if len(query_params) == 0:
+        queryset = get_today_event()
+    else:
+        queryset = filter_queryset_by_query_params(filters_data=query_params)
+    return queryset
+
+
+def get_today_event():
+    now = datetime.datetime.now()
+    queryset = Event.objects.filter(end_date__gt=now).order_by(F('start_date').asc(nulls_last=True))
+    return queryset
+
+
+def filter_queryset_by_query_params(filters_data):
     queryset = Event.objects.all()
-
-    filters_data = request.query_params
-
     if 'start_date' in filters_data.keys():
         queryset = date_filter(
             start_date=filters_data['start_date'],
             end_date=filters_data.get('end_date', None),
             query_set=queryset
         )
-
     if 'event_name' in filters_data.keys():
-        queryset = event_name_contain_filter(data=filters_data, query_set=queryset) 
-
+        queryset = event_name_contain_filter(data=filters_data, query_set=queryset)
     return queryset
-    
+
 
 
 def date_filter(

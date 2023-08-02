@@ -1,10 +1,10 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, generics, mixins
 from datetime import datetime
 from rest_framework.response import Response
 
 from .models import Event
 from .serializer import EventSerializer
-from event.services import main_filters, replace_T_and_Z
+from event.services import get_event_by_query_params, replace_T_and_Z
 from django.db.models import Q, F
 from rest_framework.pagination import PageNumberPagination
 
@@ -15,34 +15,24 @@ class UserPagination(PageNumberPagination):
     max_page_size = 100
 
 
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
+class EventListView(generics.GenericAPIView):
     serializer_class = EventSerializer
     pagination_class = UserPagination  
     queryset = Event.objects.all()
-    
-    def list(self, request): #si llega una GET request:
-        now = datetime.now()
-        if len(request.query_params.keys()) == 0:
-            queryset = Event.objects.filter(
-                Q(start_date__gt=now) | (Q(start_date__lt=now) & Q(end_date__gt=now))
-            ).order_by(F('start_date').asc(nulls_last=True))
-        else:
-            queryset = main_filters(self, request)
 
+    def get(self, request):
+        query_params = request.query_params
+        queryset = get_event_by_query_params(query_params=query_params)
         paginated_queryset = self.paginate_queryset(queryset)
         serializer = self.get_serializer(paginated_queryset, many=True)
         serializer = replace_T_and_Z(serializer=serializer)
         return Response(status=200, data=serializer.data)
 
-    # def retrieve(self, request, pk=None):
-    #     try:
-    #         event = Event.objects.get(pk=pk)
-    #     except Event.DoesNotExist:
-    #         return Response({"detail": "Evento no encontrado."}, status=404)
 
-    #     serializer = self.get_serializer(event)
-    #     serializer = replace_T_and_Z(serializer=serializer)
-    #     return Response(serializer.data)
+class EventDetailView(generics.RetrieveAPIView):
+    serializer_class = EventSerializer
+    queryset = Event.objects.all()
+    lookup_field = 'pk'
 
 
 # @authentication_classes([SessionAuthentication])
