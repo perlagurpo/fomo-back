@@ -20,7 +20,7 @@ class EventSerializer(serializers.ModelSerializer):
             'event_location',
             'ticket_price',
             'highlighted',
-            'categorys'
+            'category'
         ]
         #todos los campos
 
