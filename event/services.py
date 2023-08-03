@@ -29,6 +29,10 @@ def filter_queryset_by_query_params(filters_data):
         )
     if 'event_name' in filters_data.keys():
         queryset = event_name_contain_filter(data=filters_data, query_set=queryset)
+    
+    if 'category' in filters_data.keys():
+        queryset = category_filter(data=filters_data, query_set=queryset)
+    
     return queryset
 
 
@@ -63,6 +67,13 @@ def event_name_contain_filter(data, query_set):
         event_name = data['event_name']
         event_filter_qs = query_set.filter(event_name__icontains=event_name)        
         return event_filter_qs
+
+def category_filter(data, query_set):
+    categories = data.getlist('category', None)
+    if categories:
+        query_set = query_set.filter(category__in=categories)
+    return query_set
+
 
 def replace_T_and_Z(serializer):
     """Reemplaza la T (time) y la Z (zone) del formato datetime por un espacio y nada respectivamente.  
