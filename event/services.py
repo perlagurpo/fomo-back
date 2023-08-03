@@ -12,13 +12,13 @@ def get_event_by_query_params(query_params):
         queryset = filter_queryset_by_query_params(filters_data=query_params)
     return queryset
 
-
+####Si no se usan filtros de búsqueda:
 def get_today_event():
     now = datetime.datetime.now()
     queryset = Event.objects.filter(end_date__gt=now).order_by(F('start_date').asc(nulls_last=True))
     return queryset
 
-
+####Si se usan filtros de búsqueda:
 def filter_queryset_by_query_params(filters_data):
     queryset = Event.objects.all()
     if 'start_date' in filters_data.keys():
@@ -38,16 +38,7 @@ def date_filter(
         start_date:datetime.datetime,
         end_date: datetime.datetime =None
 ):
-    """Si la request tiene el atributo 'start_date' y este tiene como valor una lista(#EJ: "start_date":["01-01-2001", "01-01-2005"]) la función entiende que recibe un rango de fechas y aplica un filtro.
-    Si la request.data tiene como valor una sola fecha realiza un filtro estricto devolviendo los eventos de la BBDD que tienen esa fecha.
 
-    Args:
-        data (dict or dict list): request.data
-        query_set (qs): queryset ya filtrado o no.
-
-    Returns:
-        object collection: el queryset filtrado.
-    """
     date_formated = datetime.datetime.strptime(start_date, '%d-%m-%Y')
     date_start = datetime.datetime.combine(date_formated, datetime.time.min)
     date_end = datetime.datetime.combine(date_formated, datetime.time.max)
