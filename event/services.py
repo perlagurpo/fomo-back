@@ -77,24 +77,24 @@ def category_filter(data, query_set):
         query_set = query_set.filter(category__in=categories)
     return query_set
 
-def free_filter(data, query_set):
-    if 'free' in data:
-        if data['free'].lower() == 'true':
-            query_set = query_set.filter(ticket_price=0)
-        elif data['free'].lower() == 'false':
-            query_set = query_set.exclude(ticket_price=0)
-    return query_set
+# def free_filter(data, query_set):
+#     if 'free' in data:
+#         if data['free'].lower() == 'true':
+#             query_set = query_set.filter(ticket_price=0)
+#         elif data['free'].lower() == 'false':
+#             query_set = query_set.exclude(ticket_price=0)
+#     return query_set
     
 ###SI ticket_price puede ser null:
 # from django.db.models import Q
 
-# def free_filter(data, query_set):
-#     if 'free' in data:
-#         if data['free'].lower() == 'true':
-#             query_set = query_set.filter(Q(ticket_price=0) | Q(ticket_price__isnull=True))
-#         elif data['free'].lower() == 'false':
-#             query_set = query_set.exclude(Q(ticket_price=0) | Q(ticket_price__isnull=True))
-#     return query_set
+def free_filter(data, query_set):
+    if 'free' in data:
+        if data['free'].lower() == 'true':
+            query_set = query_set.filter(Q(ticket_price=0) | Q(ticket_price__isnull=True))
+        elif data['free'].lower() == 'false':
+            query_set = query_set.exclude(Q(ticket_price=0) | Q(ticket_price__isnull=True))
+    return query_set
 
 
 
