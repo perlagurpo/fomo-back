@@ -32,6 +32,9 @@ def filter_queryset_by_query_params(filters_data):
     
     if 'category' in filters_data.keys():
         queryset = category_filter(data=filters_data, query_set=queryset)
+
+    if 'free' in filters_data.keys():
+        queryset = free_filter(data=filters_data, query_set=queryset)
     
     return queryset
 
@@ -73,6 +76,28 @@ def category_filter(data, query_set):
     if categories:
         query_set = query_set.filter(category__in=categories)
     return query_set
+
+def free_filter(data, query_set):
+    if 'free' in data:
+        if data['free'].lower() == 'true':
+            query_set = query_set.filter(ticket_price=0)
+        elif data['free'].lower() == 'false':
+            query_set = query_set.exclude(ticket_price=0)
+    return query_set
+    
+###SI ticket_price puede ser null:
+# from django.db.models import Q
+
+# def free_filter(data, query_set):
+#     if 'free' in data:
+#         if data['free'].lower() == 'true':
+#             query_set = query_set.filter(Q(ticket_price=0) | Q(ticket_price__isnull=True))
+#         elif data['free'].lower() == 'false':
+#             query_set = query_set.exclude(Q(ticket_price=0) | Q(ticket_price__isnull=True))
+#     return query_set
+
+
+
 
 
 def replace_T_and_Z(serializer):
