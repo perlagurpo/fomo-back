@@ -33,8 +33,8 @@ class Event(models.Model):
     def day_name_start(self):
         if self.start_date:
             # Establece idioma español
-            #locale.setlocale(locale.LC_ALL, 'es_AR.utf8') #validar con el "locale -a"
-            #locale.getlocale(locale.LC_TIME)
+            locale.setlocale(locale.LC_ALL, 'es_AR.utf8') #validar con el "locale -a"
+            locale.getlocale(locale.LC_TIME)
             # Formatear la fecha y obtener el nombre del día... ahora en es
             return self.start_date.strftime('%A').capitalize()
         return None
