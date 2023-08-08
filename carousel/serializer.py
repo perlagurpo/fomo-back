@@ -4,4 +4,11 @@ from rest_framework import serializers
 class CarouselSerializer(serializers.ModelSerializer):
     class Meta:
         model = Carousel
-        fields = '__all__'
+        fields = [
+                  'order',
+                  'name',
+                  'description', 
+                  'image_short', 
+                  'description_button',
+                  'link_button'
+                  ]

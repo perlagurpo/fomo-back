@@ -17,3 +17,8 @@ class Carousel(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def image_short(self):
+        if self.image:
+            return self.image.url
+        return None
