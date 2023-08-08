@@ -22,6 +22,7 @@ class EventListView(generics.GenericAPIView):
 
     def get(self, request):
         query_params = request.query_params
+        print(query_params)
         queryset = get_event_by_query_params(query_params=query_params)
         paginated_queryset = self.paginate_queryset(queryset)
         serializer = self.get_serializer(paginated_queryset, many=True)

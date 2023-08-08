@@ -12,7 +12,6 @@ class Event(models.Model):
     start_date = models.DateTimeField() #YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] lo que está entre corchetes es opcional.
     end_date = models.DateTimeField(null=True, blank=True)
     event_name = models.CharField(max_length=255)
-    event_type = models.CharField(max_length=255, null=True, blank=True)
     has_ticket = models.BooleanField(null=True, blank=True)
     ticket_price = models.IntegerField(null=True, blank=True)
     tickets_left = models.BooleanField(null=True, blank=True)
@@ -33,8 +32,8 @@ class Event(models.Model):
     def day_name_start(self):
         if self.start_date:
             # Establece idioma español
-            locale.setlocale(locale.LC_ALL, 'es_AR.utf8') #validar con el "locale -a"
-            locale.getlocale(locale.LC_TIME)
+            #locale.setlocale(locale.LC_ALL, 'es_AR.utf8') #validar con el "locale -a"
+            #locale.getlocale(locale.LC_TIME)
             # Formatear la fecha y obtener el nombre del día... ahora en es
             return self.start_date.strftime('%A').capitalize()
         return None
@@ -43,8 +42,8 @@ class Event(models.Model):
     def day_name_end(self):
         if self.start_date:
             # Establece idioma español
-            locale.setlocale(locale.LC_ALL, 'es_AR.utf8') #validar con el "locale -a"
-            locale.getlocale(locale.LC_TIME)
+            #locale.setlocale(locale.LC_ALL, 'es_AR.utf8') #validar con el "locale -a"
+            #locale.getlocale(locale.LC_TIME)
             # Formatear la fecha y obtener el nombre del día... ahora en es
             return self.end_date.strftime('%A').capitalize()
         return None
