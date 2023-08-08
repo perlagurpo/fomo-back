@@ -35,9 +35,12 @@ class Event(models.Model):
             #locale.setlocale(locale.LC_ALL, 'es_AR.utf8') #validar con el "locale -a"
             #locale.getlocale(locale.LC_TIME)
             # Formatear la fecha y obtener el nombre del día... ahora en es
-            return self.start_date.strftime('%A').capitalize()
+            day_name_start_eng = self.start_date.strftime('%A').capitalize()
+            day_name_start_es = translate_day(day_name_start_eng)
+            return day_name_start_es
         return None
     
+
     @property
     def day_name_end(self):
         if self.start_date:
@@ -45,7 +48,9 @@ class Event(models.Model):
             #locale.setlocale(locale.LC_ALL, 'es_AR.utf8') #validar con el "locale -a"
             #locale.getlocale(locale.LC_TIME)
             # Formatear la fecha y obtener el nombre del día... ahora en es
-            return self.end_date.strftime('%A').capitalize()
+            day_name_end_eng = self.end_date.strftime('%A').capitalize()
+            day_name_end_es = translate_day(day_name_end_eng)
+            return day_name_end_es
         return None
 
 
@@ -57,4 +62,16 @@ class Event(models.Model):
             return self.event_img.url
         return None
 
+####No pude ponerlo en services.py por 'importaciones circulares'
+def translate_day(day_in_english):
+    traducciones = {
+        'Monday': 'Lunes',
+        'Tuesday': 'Martes',
+        'Wednesday': 'Miércoles',
+        'Thursday': 'Jueves',
+        'Friday': 'Viernes',
+        'Saturday': 'Sábado',
+        'Sunday': 'Domingo'
+    }
 
+    return traducciones.get(day_in_english, "Día no válido")
