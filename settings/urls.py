@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('event/', include('event.urls')),
     path('category/', include('category.urls')),
+    path('carousel/', include('carousel.urls')),
 ]
 # Ruta para servir imágenes desde MEDIA_ROOT
 urlpatterns += [

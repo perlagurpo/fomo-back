@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'rest_framework',
     "corsheaders",
     'event',
-    'category'
+    'category',
+    'carousel'
 ]
 
 MIDDLEWARE = [
