@@ -75,3 +75,8 @@ def translate_day(day_in_english):
     }
 
     return traducciones.get(day_in_english, "Día no válido")
+
+###########Esto podría ser útil?
+    # @property
+    # def formatted_start_date(self):
+    #     return self.start_date.strftime('%d-%m-%Y %H:%M')
