@@ -177,4 +177,52 @@
 
 </details>
 
+------------------------------------------------------------------------------------------
 
+#### Consultar Carruseles
+
+<details>
+ <summary><code>GET</code> <code><b>/carousel</b></code> <code>Carruseles</code></summary>
+
+##### Parameters
+
+> | name |  type     | data type      | description                         |
+> |------|-----------|----------------|-------------------------------------|
+
+##### Responses
+
+> | http code | content-type                      | response                                    |
+> |-----------|-----------------------------------|---------------------------------------------|
+> | `200`     | `application/json`        | Json                                        |
+
+##### Example Response
+```json
+[
+    {
+        "order": 2,
+        "name": "asdasdsa",
+        "description": "dasdasdsad",
+        "image_short": "/media/images/Screenshot_from_2023-08-04_09-08-49.png",
+        "description_button": "dasfdsfdsaf",
+        "link_button": "asdfsadfsdafdsaf"
+    },
+    {
+        "order": 5,
+        "name": "josé el carrusel",
+        "description": "carruseliente",
+        "image_short": "/media/images/Screenshot_from_2023-08-03_13-51-05.png",
+        "description_button": "clickee aquí buen jombre",
+        "link_button": "www.hola.com"
+    },
+    {
+        "order": 6,
+        "name": "pepe",
+        "description": "popo",
+        "image_short": "/media/images/Screenshot_from_2023-08-03_11-56-57.png",
+        "description_button": "pupu",
+        "link_button": "prrrr"
+    }
+]
+```
+
+</details>
