@@ -1,12 +1,12 @@
-from rest_framework import viewsets, generics, mixins
-from datetime import datetime
+from rest_framework import generics, mixins
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.pagination import PageNumberPagination
+
 
 from .models import Event
 from .serializer import EventSerializer, EventDetailSerializer
 from event.services import get_event_by_query_params, replace_T_and_Z
-from django.db.models import Q, F
-from rest_framework.pagination import PageNumberPagination
 
 
 class EventPagination(PageNumberPagination):
@@ -22,7 +22,6 @@ class EventListView(generics.GenericAPIView):
 
     def get(self, request):
         query_params = request.query_params
-        print(query_params)
         queryset = get_event_by_query_params(query_params=query_params)
         paginated_queryset = self.paginate_queryset(queryset)
         serializer = self.get_serializer(paginated_queryset, many=True)
@@ -34,6 +33,41 @@ class EventDetailView(generics.RetrieveAPIView):
     serializer_class = EventDetailSerializer
     queryset = Event.objects.all()
     lookup_field = 'pk'
+
+
+
+###Pensando en usuarios creadores
+class CreatorEventListCreateView(
+    generics.ListCreateAPIView,                     
+                          ):
+    serializer_class = EventSerializer #acá tengo que hacer un serializer para los usuarios creadores
+    permission_classes = [IsAuthenticated] #IsOwnerOrReadOnly ?
+
+    def get_queryset(self):#y si no tiene eventos creados?
+        return Event.objects.filter(user_creator=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user_creator=self.request.user)
+
+
+class CreatorDetailUpdateDestroy(
+    generics.RetrieveUpdateDestroyAPIView,
+                                 ):
+    serializer_class = EventSerializer#También cambiarlo por creatorserializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Event.objects.filter(user_creator=self.request.user)
+
+        
+
+
+
+
+
+
+
+
 
 
 

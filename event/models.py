@@ -13,17 +13,18 @@ class Event(models.Model):
     end_date = models.DateTimeField(null=True, blank=True)
     event_name = models.CharField(max_length=255)
     has_ticket = models.BooleanField(null=True, blank=True)
-    ticket_price = models.IntegerField(null=True, blank=True)
+    ticket_price = models.IntegerField(null=True, blank=True, help_text='En pesos.')
     tickets_left = models.BooleanField(null=True, blank=True)
     tickets_available = models.IntegerField(null=True, blank=True)
-    buy_tickets = models.CharField(max_length=255, null=True, blank=True)
-    event_link = models.CharField(max_length=255, null=True, blank=True)
+    buy_tickets = models.CharField(max_length=255, null=True, blank=True, help_text='Acá va un link a donde comprar las entradas.')
+    event_link = models.CharField(max_length=255, null=True, blank=True, help_text='Acá links al evento (por ejemplo URLs de Instagram.)')
     event_img = models.ImageField(max_length=255, upload_to='images/')
-    organization_page = models.CharField(max_length=255, null=True, blank=True)
-    event_location = models.CharField(max_length=255)
+    organization_page = models.CharField(max_length=255, null=True, blank=True, help_text='Acá link a redes de organizadores.')
+    event_location = models.CharField(max_length=255, help_text='Dirección del evento.')
     user_creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, blank=True)#esto no me gusta
+    creator_showed = models.CharField(default=user_creator, max_length=255,  null=True, blank=True) # para linkear con el usuario: User, to_field='username',
     highlighted = models.BooleanField(default=False)#excluido del panel de creación en admin.py
-    category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL, blank=True, to_field='name')
+    category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL, blank=True, to_field='name', help_text='Tipo de evento.')
 
     class Meta:
         ordering = ['start_date']
