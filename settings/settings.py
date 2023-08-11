@@ -51,10 +51,12 @@ INSTALLED_APPS = [
     "corsheaders",
     'event',
     'category',
-    'carousel'
+    'carousel',
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     "corsheaders.middleware.CorsMiddleware",
@@ -150,3 +152,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 # Pillow
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+####Debug toolbar
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]

@@ -24,6 +24,7 @@ urlpatterns = [
     path('event/', include('event.urls')),
     path('category/', include('category.urls')),
     path('carousel/', include('carousel.urls')),
+    path("__debug__/", include("debug_toolbar.urls")),
 ]
 # Ruta para servir imágenes desde MEDIA_ROOT
 urlpatterns += [
