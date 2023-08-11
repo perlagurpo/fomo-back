@@ -47,20 +47,21 @@ class EventDetailSerializer(serializers.ModelSerializer):
         return obj.day_name_end
     
 class EventCreatorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = [
+            'start_date',
+            'end_date',
+            'event_name',
+            'has_ticket',
+            'ticket_price',
+            'tickets_available',
+            'buy_tickets',
+            'event_link',
+            'event_img',
+            'organization_page',
+            'event_location',
+            'user_creator',
+            'creator_showed',
+        ]
 
-    model = Event
-    fields = [
-        'start_date',
-        'end_date',
-        'event_name',
-        'has_ticket',
-        'ticket_price',
-        'tickets_available',
-        'buy_tickets',
-        'event_link',
-        'event_img',
-        'organization_page',
-        'event_location',
-        'user_creator',
-        'creator_showed',
-    ]

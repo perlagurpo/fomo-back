@@ -5,7 +5,7 @@ from rest_framework.pagination import PageNumberPagination
 
 
 from .models import Event
-from .serializer import EventSerializer, EventDetailSerializer
+from .serializer import EventSerializer, EventDetailSerializer, EventCreatorSerializer
 from event.services import get_event_by_query_params, replace_T_and_Z
 
 
@@ -40,7 +40,7 @@ class EventDetailView(generics.RetrieveAPIView):
 class CreatorEventListCreateView(
     generics.ListCreateAPIView,                     
                           ):
-    serializer_class = EventSerializer #acá tengo que hacer un serializer para los usuarios creadores
+    serializer_class = EventCreatorSerializer #acá tengo que hacer un serializer para los usuarios creadores
     permission_classes = [IsAuthenticated] #IsOwnerOrReadOnly ?
 
     def get_queryset(self):#y si no tiene eventos creados?
@@ -53,7 +53,7 @@ class CreatorEventListCreateView(
 class CreatorDetailUpdateDestroy(
     generics.RetrieveUpdateDestroyAPIView,
                                  ):
-    serializer_class = EventSerializer#También cambiarlo por creatorserializer
+    serializer_class = EventCreatorSerializer #También cambiarlo por creatorserializer
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):

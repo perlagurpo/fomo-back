@@ -10,7 +10,7 @@ urlpatterns = [
     path(r'', views.EventListView.as_view(), name='event_list'),
     path(r'<int:pk>/', views.EventDetailView.as_view(), name='event_detail'),
     path(r'create/', views.CreatorEventListCreateView.as_view(), name='event_create'),
-    path(r'update-destroy', views.CreatorDetailUpdateDestroy.as_view(), name='event_update_destroy')
+    path(r'update-destroy/<int:pk>', views.CreatorDetailUpdateDestroy.as_view(), name='event_update_destroy')
 
 ]
 
