@@ -51,13 +51,22 @@ class CreatorEventListCreateView(
 
 
 class CreatorDetailUpdateDestroy(
-    generics.RetrieveUpdateDestroyAPIView,
-                                 ):
-    serializer_class = EventCreatorSerializer #También cambiarlo por creatorserializer
+    generics.UpdateAPIView, 
+    generics.RetrieveDestroyAPIView
+    ):
+    serializer_class = EventCreatorSerializer
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
         return Event.objects.filter(user_creator=self.request.user)
+        
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data)
 
         
 
