@@ -9,7 +9,7 @@ class CarouselSerializer(serializers.ModelSerializer):
                   'name',
                   'description', 
                   'image_short',
-                  'image_mobile',
+                  'image_short_mobile',
                   'description_button',
                   'link_button'
                   ]
