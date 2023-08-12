@@ -16,6 +16,8 @@ class Event(models.Model):
     ticket_price = models.IntegerField(null=True, blank=True)
     tickets_left = models.BooleanField(null=True, blank=True)
     tickets_available = models.IntegerField(null=True, blank=True)
+    ticket_type = models.CharField(null=True, blank=True, help_text='Entrada virtual, física, etc')
+    description = models.TextField(null=True, blank=True)
     buy_tickets = models.CharField(max_length=255, null=True, blank=True)
     event_link = models.CharField(max_length=255, null=True, blank=True)
     event_img = models.ImageField(max_length=255, upload_to='images/')
