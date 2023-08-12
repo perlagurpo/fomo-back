@@ -8,7 +8,8 @@ class CarouselSerializer(serializers.ModelSerializer):
                   'order',
                   'name',
                   'description', 
-                  'image_short', 
+                  'image_short',
+                  'image_mobile',
                   'description_button',
                   'link_button'
                   ]

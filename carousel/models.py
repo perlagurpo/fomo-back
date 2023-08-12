@@ -23,3 +23,8 @@ class Carousel(models.Model):
         if self.image:
             return self.image.url
         return None
+
+    def image_short_mobile(self):
+        if self.image_mobile:
+            return self.image_mobile.url
+        return None
