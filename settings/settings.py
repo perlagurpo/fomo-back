@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     "corsheaders",
     'event',
     'category',
-    'carousel'
+    'carousel',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -150,3 +151,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 # Pillow
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}   
