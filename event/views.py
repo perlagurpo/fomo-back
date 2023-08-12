@@ -62,10 +62,11 @@ class CreatorDetailUpdateDestroy(
         
     def partial_update(self, request, *args, **kwargs):
         instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        #serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer = EventCreatorSerializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-
+        print('------------------hola----------')
         return Response(serializer.data)
 
         
