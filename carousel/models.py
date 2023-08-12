@@ -6,6 +6,7 @@ class Carousel(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='images/')
+    image_mobile = models.ImageField(upload_to='images/', null=True, blank=True)
     description_button = models.CharField(max_length=255, blank=True, null=True)
     link_button = models.CharField(max_length=255, blank=True, null=True)
     order = models.IntegerField(help_text='Este numero se utiliza para determinar el orden del carrousel. '
