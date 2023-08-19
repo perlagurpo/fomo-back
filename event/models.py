@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from datetime import datetime
 import locale
 from category.models import Category
+from location.models import Location
 
 # Create your models here.
 class Event(models.Model):
@@ -23,6 +24,7 @@ class Event(models.Model):
     event_img = models.ImageField(max_length=255, upload_to='images/')
     organization_page = models.CharField(max_length=255, null=True, blank=True)
     event_location = models.CharField(max_length=255)
+    location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL, to_field='name')
     user_creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, blank=True)#esto no me gusta
     highlighted = models.BooleanField(default=False)#excluido del panel de creación en admin.py
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL, blank=True, to_field='name')
