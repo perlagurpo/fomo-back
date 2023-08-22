@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'category',
     'carousel',
     'rest_framework_simplejwt',
+    'location',
 ]
 
 MIDDLEWARE = [

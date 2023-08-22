@@ -27,6 +27,7 @@ urlpatterns = [
     path('carousel/', include('carousel.urls')),
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+    path('location/', include('location.urls')),
 ]
 # Ruta para servir imágenes desde MEDIA_ROOT
 urlpatterns += [
