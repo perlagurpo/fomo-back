@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from datetime import datetime
+from datetime import timedelta
 import locale
 from category.models import Category
 from location.models import Location
@@ -57,6 +58,19 @@ class Event(models.Model):
             day_name_end_eng = self.end_date.strftime('%A').capitalize()
             day_name_end_es = translate_day(day_name_end_eng)
             return day_name_end_es
+        return None
+    
+    @property
+    def time_difference(self):
+        if self.start_date and self.end_date:
+            duration = self.end_date - self.start_date
+
+            days = duration.days
+            hours, remainder = divmod(duration.seconds, 3600)
+            minutes, _ = divmod(remainder, 60)
+
+            return f"{days} días, {hours} horas, {minutes} minutos"
+        
         return None
 
 
