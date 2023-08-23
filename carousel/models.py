@@ -28,3 +28,8 @@ class Carousel(models.Model):
         if self.image_mobile:
             return self.image_mobile.url
         return None
+    
+
+    class Meta:
+        verbose_name = 'Carrusel'
+        verbose_name_plural = 'Carruseles'
