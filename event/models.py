@@ -7,6 +7,14 @@ from datetime import timedelta
 import locale
 from category.models import Category
 from location.models import Location
+from django.utils import timezone
+import os
+
+def image_upload_path(instance, filename):
+    timestamp = timezone.now().strftime('%Y-%m-%d--%H-%M-%S')
+    extension = os.path.splitext(filename)[-1]
+    unique_filename = f"{timestamp}{extension}"
+    return os.path.join('images', unique_filename)
 
 # Create your models here.
 class Event(models.Model):
@@ -22,7 +30,7 @@ class Event(models.Model):
     description = models.TextField(null=True, blank=True, verbose_name='Descripción')
     buy_tickets = models.CharField(max_length=255, null=True, blank=True, verbose_name='Comprar tickets:')
     event_link = models.CharField(max_length=255, null=True, blank=True, verbose_name='Link al evento:')
-    event_img = models.ImageField(max_length=255, upload_to='images/', verbose_name='Imagen del evento')
+    event_img = models.ImageField(max_length=255, upload_to=image_upload_path, verbose_name='Imagen del evento')
     organization_page = models.CharField(max_length=255, null=True, blank=True, verbose_name='Página organización')
     event_location = models.CharField(max_length=255, verbose_name='Dirección del evento')
     location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL, to_field='name', verbose_name='Lugar')
@@ -95,6 +103,8 @@ def translate_day(day_in_english):
     }
 
     return traducciones.get(day_in_english, "Día no válido")
+
+
 
 ####Para cambiar el formato de la fecha en nuevo falso-atributo
 # def event_date_formatted(self, obj):
