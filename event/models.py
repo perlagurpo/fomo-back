@@ -3,9 +3,18 @@ from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from datetime import datetime
+from datetime import timedelta
 import locale
 from category.models import Category
 from location.models import Location
+from django.utils import timezone
+import os
+
+def image_upload_path(instance, filename):
+    timestamp = timezone.now().strftime('%Y-%m-%d--%H-%M-%S')
+    extension = os.path.splitext(filename)[-1]
+    unique_filename = f"{timestamp}{extension}"
+    return os.path.join('images', unique_filename)
 
 # Create your models here.
 class Event(models.Model):
@@ -21,7 +30,7 @@ class Event(models.Model):
     description = models.TextField(null=True, blank=True, verbose_name='Descripción')
     buy_tickets = models.CharField(max_length=255, null=True, blank=True, verbose_name='Comprar tickets:')
     event_link = models.CharField(max_length=255, null=True, blank=True, verbose_name='Link al evento:')
-    event_img = models.ImageField(max_length=255, upload_to='images/', verbose_name='Imagen del evento')
+    event_img = models.ImageField(max_length=255, upload_to=image_upload_path, verbose_name='Imagen del evento')
     organization_page = models.CharField(max_length=255, null=True, blank=True, verbose_name='Página organización')
     event_location = models.CharField(max_length=255, verbose_name='Dirección del evento')
     location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL, to_field='name', verbose_name='Lugar')
@@ -58,6 +67,19 @@ class Event(models.Model):
             day_name_end_es = translate_day(day_name_end_eng)
             return day_name_end_es
         return None
+    
+    @property
+    def time_difference(self):
+        if self.start_date and self.end_date:
+            duration = self.end_date - self.start_date
+
+            days = duration.days
+            hours, remainder = divmod(duration.seconds, 3600)
+            minutes, _ = divmod(remainder, 60)
+
+            return f"{days} días, {hours} horas, {minutes} minutos"
+        
+        return None
 
 
     def __str__(self):
@@ -81,6 +103,8 @@ def translate_day(day_in_english):
     }
 
     return traducciones.get(day_in_english, "Día no válido")
+
+
 
 ####Para cambiar el formato de la fecha en nuevo falso-atributo
 # def event_date_formatted(self, obj):
