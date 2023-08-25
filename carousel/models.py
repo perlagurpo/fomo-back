@@ -1,17 +1,19 @@
 from django.db import models
 
-# Create your models here.
+from event.models import image_upload_path
+
+
 class Carousel(models.Model):
 
-    name = models.CharField(max_length=255)
-    description = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to='images/')
-    image_mobile = models.ImageField(upload_to='images/', null=True, blank=True)
-    description_button = models.CharField(max_length=255, blank=True, null=True)
-    link_button = models.CharField(max_length=255, blank=True, null=True)
+    name = models.CharField(max_length=255, verbose_name='Nombre')
+    description = models.TextField(blank=True, null=True, verbose_name='Descripción')
+    image = models.ImageField(upload_to=image_upload_path, verbose_name='Imagen')
+    image_mobile = models.ImageField(upload_to=image_upload_path, null=True, blank=True, verbose_name='Imagen mobile')
+    description_button = models.CharField(max_length=255, blank=True, null=True, verbose_name='Descripción del botón')
+    link_button = models.CharField(max_length=255, blank=True, null=True, verbose_name='Link del botón')
     order = models.IntegerField(help_text='Este numero se utiliza para determinar el orden del carrousel. '
-                                          'Menor numero, mayor prioridad.')
-    active = models.BooleanField(null=False, default=False)
+                                          'Menor numero, mayor prioridad.', verbose_name='Orden')
+    active = models.BooleanField(null=False, default=False, verbose_name='Activo')
 
     class Meta:
         ordering = ['order']
