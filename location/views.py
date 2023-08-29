@@ -1,7 +1,7 @@
 from rest_framework import generics
 
 from .models import Location
-from .serializers import LocationSerializer
+from .serializer import LocationSerializer
 
 
 class LocationListView(generics.ListAPIView):
