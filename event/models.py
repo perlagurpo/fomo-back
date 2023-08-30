@@ -33,7 +33,8 @@ class Event(models.Model):
     event_img = models.ImageField(max_length=255, upload_to=image_upload_path, verbose_name='Imagen del evento')
     organization_page = models.CharField(max_length=255, null=True, blank=True, verbose_name='Página organización')
     #event_location = models.CharField(max_length=255, verbose_name='Dirección del evento')
-    location_name = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL, to_field='name', verbose_name='Lugar')
+    location_name = models.ForeignKey(Location, null=True, blank=True, default='ADDRESS', on_delete=models.SET_NULL, to_field='name', verbose_name='Lugar', related_name='name_location_event')
+    #location_coordinates = models.OneToOneField(Location, null=True, blank=True, on_delete=models.SET_NULL, to_field='coordinates', unique=True, related_name='coordinates_location_event')
     user_creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, blank=True, verbose_name='Organización')#esto no me gusta
     highlighted = models.BooleanField(default=False, verbose_name='¿Evento destacado?')#excluido del panel de creación en admin.py
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL, blank=True, to_field='name', verbose_name='categoría')
