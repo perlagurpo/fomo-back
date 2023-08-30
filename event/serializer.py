@@ -1,13 +1,14 @@
 from rest_framework import serializers
 from .models import Event
 from .models import Location
+from location.serializer import LocationSerializer
 
 from django.contrib.auth.models import User
 
 #Este Serializer usa el EventListView
 class EventSerializer(serializers.ModelSerializer):
-    coordinates_maps = serializers.SerializerMethodField(source='get_maps_google_link')
-    
+    location = LocationSerializer()
+    #igualar a un serializer que pase los atributos de location que quiero que pasen a name
     def get_maps_google_link(self, obj):
         if obj.location.coordinates:
             return obj.location_coordinates.maps_google_link
@@ -28,7 +29,7 @@ class EventSerializer(serializers.ModelSerializer):
             'category',
             'time_difference',
             #'location_coordinates'
-            'location_name',
+            ,
             #'maps_google_link',
             'coordinates_maps',
 
