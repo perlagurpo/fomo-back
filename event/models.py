@@ -43,8 +43,22 @@ class Event(models.Model):
         verbose_name = 'Evento'
         verbose_name_plural = 'Eventos'
 
+    # def save(self, *args, **kwargs):
+    #     self.slug = slugify(f'{self.event_name}--{self.pk}')
+    #     super().save(*args, **kwargs)
+
+    
     def save(self, *args, **kwargs):
-        self.slug = slugify(f'{self.event_name}+{self.pk}')
+        # Genera el slug solo si no existe uno
+        if not self.slug:
+            base_slug = slugify(self.event_name)
+            slug = base_slug
+            counter = 1
+            while Event.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+
         super().save(*args, **kwargs)
 
     @property
