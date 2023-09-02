@@ -36,30 +36,32 @@ class Event(models.Model):
     user_creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, blank=True, verbose_name='Organización')#esto no me gusta
     highlighted = models.BooleanField(default=False, verbose_name='¿Evento destacado?')#excluido del panel de creación en admin.py
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL, blank=True, to_field='name', verbose_name='categoría')
-    slug = models.SlugField(max_length=255, unique=True, editable=False)
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
 
     class Meta:
         ordering = ['start_date']
         verbose_name = 'Evento'
         verbose_name_plural = 'Eventos'
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(f'{self.event_name}--{self.pk}')
+        super().save(*args, **kwargs)
+
+    
     # def save(self, *args, **kwargs):
-    #     self.slug = slugify(f'{self.event_name}--{self.pk}')
+    #     # Genera el slug solo si no existe uno
+    #     if not self.slug:
+    #         base_slug = slugify(self.event_name)
+    #         slug = base_slug
+    #         counter = 1
+    #         while Event.objects.filter(slug=slug).exists():
+    #             slug = f"{base_slug}-{counter}"
+    #             counter += 1
+    #         self.slug = slug
+
     #     super().save(*args, **kwargs)
 
     
-    def save(self, *args, **kwargs):
-        # Genera el slug solo si no existe uno
-        if not self.slug:
-            base_slug = slugify(self.event_name)
-            slug = base_slug
-            counter = 1
-            while Event.objects.filter(slug=slug).exists():
-                slug = f"{base_slug}-{counter}"
-                counter += 1
-            self.slug = slug
-
-        super().save(*args, **kwargs)
 
     @property
     def day_name_start(self):
