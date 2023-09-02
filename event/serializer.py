@@ -1,10 +1,13 @@
 from rest_framework import serializers
 from .models import Event
+from location.models import Location
+from location.serializer import LocationSerializer
 
 from django.contrib.auth.models import User
 
 #Este Serializer usa el EventListView
 class EventSerializer(serializers.ModelSerializer):
+    location_event = LocationSerializer()
     class Meta:
         model=Event
         #fields=('fullname','nickname') #Indicando los campos individualmente
@@ -21,6 +24,7 @@ class EventSerializer(serializers.ModelSerializer):
             'highlighted',
             'category',
             'time_difference',
+            'location_event',
         ]
         #todos los campos
 
@@ -33,6 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', ''] #??
 
 class EventDetailSerializer(serializers.ModelSerializer):
+    #Acá estoy poniendo los @property que no se incluyen solos cuando uso fields = '__all__'
     day_name_start = serializers.SerializerMethodField(source='get_day_name_start')
     day_name_end = serializers.SerializerMethodField(source='get_day_name_end')
 

@@ -9,4 +9,5 @@ class LocationSerializer(serializers.ModelSerializer):
             'name',
             'address',
             'coordinates',
+            'google_maps_link',
         ]
