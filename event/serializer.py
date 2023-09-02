@@ -24,6 +24,7 @@ class EventSerializer(serializers.ModelSerializer):
             'category',
             'time_difference',
             'location_event',
+            'slug'
         ]
         #todos los campos
 

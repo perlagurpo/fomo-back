@@ -4,11 +4,11 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from datetime import datetime
 from datetime import timedelta
-import locale
 from category.models import Category
 from location.models import Location
 from django.utils import timezone
 import os
+from django.utils.text import slugify
 
 def image_upload_path(instance, filename):
     timestamp = timezone.now().strftime('%Y-%m-%d--%H-%M-%S')
@@ -36,11 +36,16 @@ class Event(models.Model):
     user_creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, blank=True, verbose_name='Organización')#esto no me gusta
     highlighted = models.BooleanField(default=False, verbose_name='¿Evento destacado?')#excluido del panel de creación en admin.py
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL, blank=True, to_field='name', verbose_name='categoría')
+    slug = models.SlugField(max_length=255, unique=True, editable=False)
 
     class Meta:
         ordering = ['start_date']
         verbose_name = 'Evento'
         verbose_name_plural = 'Eventos'
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(f'{self.event_name}+{self.pk}')
+        super().save(*args, **kwargs)
 
     @property
     def day_name_start(self):
