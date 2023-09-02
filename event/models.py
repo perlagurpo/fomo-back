@@ -44,8 +44,14 @@ class Event(models.Model):
         verbose_name_plural = 'Eventos'
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(f'{self.event_name}--{self.pk}')
-        super().save(*args, **kwargs)
+        if not self.pk:
+            # La instancia no se ha guardado en la base de datos todavía, así que generamos el slug solo con event_name
+            self.slug = slugify(f'{self.event_name}')
+        else:
+            # La instancia ya existe en la base de datos, generamos el slug con event_name + ID
+            self.slug = slugify(f'{self.event_name}-{self.pk}')
+        
+        super(Event, self).save(*args, **kwargs)
 
     
     # def save(self, *args, **kwargs):

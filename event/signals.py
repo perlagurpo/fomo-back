@@ -10,3 +10,17 @@ def generar_slug(sender, instance, **kwargs):
         base_slug = slugify(instance.event_name)
         instance.slug = f"{base_slug}-{instance.id}"
         instance.save()
+
+
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            # La instancia no se ha guardado en la base de datos todavía, así que generamos el slug
+            self.slug = slugify(f'{self.event_name}')
+        else:
+            # La instancia ya existe en la base de datos, actualizamos el slug si el nombre del evento cambió
+            original_instance = MyModel.objects.get(pk=self.pk)
+            if original_instance.event_name != self.event_name:
+                self.slug = slugify(f'{self.event_name}')
+        
+        super(MyModel, self).save(*args, **kwargs)
