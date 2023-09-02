@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import Event
-from location.models import Location
 from location.serializer import LocationSerializer
 
 from django.contrib.auth.models import User
@@ -40,7 +39,9 @@ class EventDetailSerializer(serializers.ModelSerializer):
     #Acá estoy poniendo los @property que no se incluyen solos cuando uso fields = '__all__'
     day_name_start = serializers.SerializerMethodField(source='get_day_name_start')
     day_name_end = serializers.SerializerMethodField(source='get_day_name_end')
-
+    location_name = serializers.SerializerMethodField(source='get_location_name')
+    location_address = serializers.SerializerMethodField(source='get_location_address')
+    location_maps_url = serializers.SerializerMethodField(source='get_location_maps_url')
     class Meta:
         model=Event
         fields = '__all__'
@@ -50,3 +51,12 @@ class EventDetailSerializer(serializers.ModelSerializer):
 
     def get_day_name_end(self, obj):
         return obj.day_name_end
+    
+    def get_location_name(self, obj):
+        return obj.location_event.name
+    
+    def get_location_address(self, obj):
+        return obj.location_event.address
+    
+    def get_location_maps_url(self, obj):
+        return obj.location_event.google_maps_link
