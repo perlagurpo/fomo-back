@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import Event
 from .models import Location
-from location.serializer import LocationSerializer
 
 from django.contrib.auth.models import User
 
