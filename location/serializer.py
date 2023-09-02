@@ -8,4 +8,5 @@ class LocationSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'address',
+            'coordinates',
         ]

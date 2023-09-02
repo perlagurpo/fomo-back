@@ -17,7 +17,6 @@ class EventSerializer(serializers.ModelSerializer):
             'event_name',
             'event_img',
             'image_url',
-            'event_location',
             'ticket_price',
             'highlighted',
             'category',
