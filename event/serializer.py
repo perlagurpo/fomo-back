@@ -39,18 +39,24 @@ class UserSerializer(serializers.ModelSerializer):
 class EventDetailSerializer(serializers.ModelSerializer):
     #Acá estoy poniendo los @property que no se incluyen solos cuando uso fields = '__all__'
     day_name_start = serializers.SerializerMethodField(source='get_day_name_start')
-    #day_name_end = serializers.SerializerMethodField(source='get_day_name_end')
-    
-    def end_date_check(self):
-        if self.end_date:
-            day_name_end = serializers.SerializerMethodField(source='get_day_name_end')
+    day_name_end = serializers.SerializerMethodField(source='get_day_name_end')
+    #day_name_end = end_date_check()
+    location_name = serializers.SerializerMethodField(source='get_location_name')
+    location_address = serializers.SerializerMethodField(source='get_location_address')
+    location_maps_url = serializers.SerializerMethodField(source='get_location_maps_url')
 
+    #Intento de validadores por si end_date o event_location vienen vacíos o sólo devuelven el ID
+    # def end_date_check(self):
+    #     if self.end_date:
+    #         day_name_end = serializers.SerializerMethodField(source='get_day_name_end')
+    #     return day_name_end
     
-    def location_check(self):
-        if self.location_event:
-            location_name = serializers.SerializerMethodField(source='get_location_name')
-            location_address = serializers.SerializerMethodField(source='get_location_address')
-            location_maps_url = serializers.SerializerMethodField(source='get_location_maps_url')
+    # def location_check(self):
+    #     if self.location_event is (isinstance(self.location_event, int) or not None or not self.location_event != ""):
+    #     #if self.location_event is not None and not isinstance(self.location_event, int) and self.location_event != "":            
+    #         location_name = serializers.SerializerMethodField(source='get_location_name')
+    #         location_address = serializers.SerializerMethodField(source='get_location_address')
+    #         location_maps_url = serializers.SerializerMethodField(source='get_location_maps_url')
     class Meta:
         model=Event
         fields = '__all__'
