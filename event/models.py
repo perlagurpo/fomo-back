@@ -1,9 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.dispatch import receiver
-from datetime import datetime
-from datetime import timedelta
-import locale
 from category.models import Category
 from location.models import Location
 from django.utils import timezone

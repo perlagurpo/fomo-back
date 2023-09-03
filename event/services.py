@@ -2,17 +2,17 @@
 import datetime
 from .models import Event
 from django.db.models import Q, F
-
-
+from event.filter_controller import FilterController
 
 def get_event_by_query_params(query_params):
     if len(query_params) == 0:
         queryset = get_today_event()
     else:
-        queryset = filter_queryset_by_query_params(filters_data=query_params)
+        return FilterController(params=query_params).get_queyset()
     return queryset
 
 ####Si no se usan filtros de búsqueda:
+
 
 def get_today_event():
     now = datetime.datetime.now()
@@ -20,6 +20,7 @@ def get_today_event():
         Q(end_date__gt=now) | Q(end_date__isnull=True, start_date__gt=now)
     ).order_by(F('start_date').asc(nulls_last=True))
     return queryset
+
 
 ####Si se usan filtros de búsqueda:
 def filter_queryset_by_query_params(filters_data):
@@ -32,15 +33,14 @@ def filter_queryset_by_query_params(filters_data):
         )
     if 'event_name' in filters_data.keys():
         queryset = event_name_contain_filter(data=filters_data, query_set=queryset)
-    
+
     if 'category' in filters_data.keys():
         queryset = category_filter(data=filters_data, query_set=queryset)
 
     if 'free' in filters_data.keys():
         queryset = free_filter(data=filters_data, query_set=queryset)
-    
-    return queryset
 
+    return queryset
 
 
 def date_filter(
@@ -71,7 +71,7 @@ def event_name_contain_filter(data, query_set):
     """
     if 'event_name' in data.keys():
         event_name = data['event_name']
-        event_filter_qs = query_set.filter(event_name__icontains=event_name)        
+        event_filter_qs = query_set.filter(event_name__icontains=event_name)
         return event_filter_qs
 
 def category_filter(data, query_set):
@@ -80,16 +80,6 @@ def category_filter(data, query_set):
         query_set = query_set.filter(category__in=categories)
     return query_set
 
-# def free_filter(data, query_set):
-#     if 'free' in data:
-#         if data['free'].lower() == 'true':
-#             query_set = query_set.filter(ticket_price=0)
-#         elif data['free'].lower() == 'false':
-#             query_set = query_set.exclude(ticket_price=0)
-#     return query_set
-    
-###SI ticket_price puede ser null:
-# from django.db.models import Q
 
 def free_filter(data, query_set):
     if 'free' in data:
@@ -98,9 +88,6 @@ def free_filter(data, query_set):
         elif data['free'].lower() == 'false':
             query_set = query_set.exclude(Q(ticket_price=0) | Q(ticket_price__isnull=True))
     return query_set
-
-
-
 
 
 def replace_T_and_Z(serializer):
