@@ -2,8 +2,11 @@
 import datetime
 from .models import Event
 from django.db.models import Q, F
+from typing import List
 
 
+# Pajarok, la idea de esto es que la proxima vez que se quiera agregar un filtro solo se tiene que definir
+# la funcion con el formato {nombre_de_atributo}_filter y ya se va a ejectuar solo en caso de que el parametro venga
 class FilterController(object):
 
     def __init__(self, params):
@@ -14,46 +17,49 @@ class FilterController(object):
     def get_queyset(self):
         return self.queryset
 
-    def do_nothing(*args, **kwargs):
-        pass
-
     def apply_filters(self):
         for param in self.params.keys():
-            function = getattr(self, f'{param}_filter', self.do_nothing)
-            function(**self.params)
+            try:
+                function = getattr(self, f'{param}_filter')
+                function(**self.params)
+            except AttributeError:
+                print(f"filtro para {param} no existe")
+            except Exception as error:
+                print(error)
 
     def start_date_filter(
             self,
-            start_date: datetime.datetime,
-            end_date: datetime.datetime = None
+            start_date: List[datetime.datetime],
+            end_date: List[datetime.datetime] = None,
+            **kwargs
     ):
+        start_date = start_date[0]
         date_formated = datetime.datetime.strptime(start_date, '%d-%m-%Y')
         date_start = datetime.datetime.combine(date_formated, datetime.time.min)
-        date_end = datetime.datetime.combine(date_formated, datetime.time.max)
         if end_date:
+            end_date = end_date[0]
             end_date_formated = datetime.datetime.strptime(end_date, '%d-%m-%Y')
             date_end = datetime.datetime.combine(end_date_formated, datetime.time.max)
-        event_filter_qs = self.queryset.filter(start_date__range=[date_start, date_end])
-        return event_filter_qs
+        else:
+            date_end = datetime.datetime.combine(date_formated, datetime.time.max)
 
-    def event_name_filter(self, event_name):
-        """Recibe la request.data y si tiene atributo 'event_name' devuelve todos los eventos de la bbdd que -contengan- el valor del atributo en su 'event_name'."""
-        print(event_name)
+        self.queryset = self.queryset.filter(start_date__range=[date_start, date_end])
+
+    def event_name_filter(self, event_name, **kwargs):
+        event_name = event_name[0]
         self.queryset = self.queryset.filter(event_name__icontains=event_name)
 
-    def category_filter(self, category):
-        if type(category) is str:
-            self.queryset = self.queryset.filter(category=category)
-        elif type(category) is list:
-            print("SI=?")
-            self.queryset = self.queryset.filter(category__in=category)
+    def category_filter(self, category, **kwargs):
+        category = category[0].split(',')
+        self.queryset = self.queryset.filter(category__in=category)
 
-    def free_filter(self, free):
-            if free.lower() == 'true':
-                # Para mi aca solo tiene que ser ticket_price=0
-                self.queryset = self.queryset.filter(Q(ticket_price=0) | Q(ticket_price__isnull=True))
-            elif free.lower() == 'false':
-                self.queryset = self.queryset.exclude(Q(ticket_price=0) | Q(ticket_price__isnull=True))
+    def free_filter(self, free, **kwargs):
+        free = free[0]
+        if free.lower() == 'true':
+            # Para mi aca solo tiene que ser ticket_price=0
+            self.queryset = self.queryset.filter(Q(ticket_price=0) | Q(has_ticket=False))
+        elif free.lower() == 'false':
+            self.queryset = self.queryset.exclude(Q(ticket_price=0) | Q(has_ticket=True))
 
 
 
