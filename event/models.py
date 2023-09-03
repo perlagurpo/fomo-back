@@ -31,7 +31,7 @@ class Event(models.Model):
     user_creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, blank=True, verbose_name='Organización')#esto no me gusta
     highlighted = models.BooleanField(default=False, verbose_name='¿Evento destacado?')#excluido del panel de creación en admin.py
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL, blank=True, to_field='name', verbose_name='categoría')
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(blank=True)
 
 
     class Meta:
