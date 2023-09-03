@@ -33,7 +33,7 @@ class EventListView(generics.GenericAPIView):
 class EventDetailView(generics.RetrieveAPIView):
     serializer_class = EventDetailSerializer
     queryset = Event.objects.all()
-    lookup_field = 'pk'
+    lookup_field = 'slug'
 
 
 

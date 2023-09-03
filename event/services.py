@@ -13,9 +13,12 @@ def get_event_by_query_params(query_params):
     return queryset
 
 ####Si no se usan filtros de búsqueda:
+
 def get_today_event():
     now = datetime.datetime.now()
-    queryset = Event.objects.filter(end_date__gt=now).order_by(F('start_date').asc(nulls_last=True))
+    queryset = Event.objects.filter(
+        Q(end_date__gt=now) | Q(end_date__isnull=True, start_date__gt=now)
+    ).order_by(F('start_date').asc(nulls_last=True))
     return queryset
 
 ####Si se usan filtros de búsqueda:
