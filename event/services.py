@@ -1,15 +1,23 @@
 #####Acá van las funciones para que las llame de otros lugares y quede más prolijo###
 import datetime
+import math
+
 from .models import Event
 from django.db.models import Q, F
 from event.filter_controller import FilterController
 
-
 def get_event_by_query_params(query_params):
     if len(query_params) == 0 or query_params.keys() == {'page':1}.keys():
-        return get_today_event()
+        qs = get_today_event()
     else:
-        return FilterController(params=query_params).get_queyset()
+        qs = FilterController(params=query_params).get_queyset()
+    structure = {
+        "count" : len(qs),
+        "count_total_page": math.ceil(len(qs)),
+        "actual_page": query_params.get("page", None)
+    }
+    return structure, qs
+
 
 
 def get_today_event():
