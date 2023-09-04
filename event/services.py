@@ -6,7 +6,7 @@ from event.filter_controller import FilterController
 
 
 def get_event_by_query_params(query_params):
-    if len(query_params) == 0:
+    if len(query_params) == 0 or query_params.keys() == {'page':1}.keys():
         return get_today_event()
     else:
         return FilterController(params=query_params).get_queyset()
