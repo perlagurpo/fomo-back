@@ -13,7 +13,7 @@ def get_event_by_query_params(query_params):
         qs = FilterController(params=query_params).get_queyset()
     structure = {
         "count" : len(qs),
-        "count_total_page": math.ceil(len(qs)),
+        "count_total_page": math.ceil(len(qs)/10),
         "actual_page": query_params.get("page", None)
     }
     return structure, qs
