@@ -71,6 +71,5 @@ class FilterController(object):
         elif free.lower() == 'false':
             self.queryset = self.queryset.exclude(Q(ticket_price=0) | Q(has_ticket=True))
 
-    def highlighted_filter(self):
+    def highlighted_filter(self, **kwargs):
         self.queryset = self.queryset.filter(highlighted=True)
-        
