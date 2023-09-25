@@ -1,4 +1,4 @@
-#####Acá van las funciones para que las llame de otros lugares y quede más prolijo###
+    #####Acá van las funciones para que las llame de otros lugares y quede más prolijo###
 import datetime
 from .models import Event
 from django.db.models import Q, F
@@ -63,3 +63,14 @@ class FilterController(object):
 
 
 
+    def free_filter(self, free, **kwargs):
+        free = free[0]
+        if free.lower() == 'true':
+            # Para mi aca solo tiene que ser ticket_price=0
+            self.queryset = self.queryset.filter(Q(ticket_price=0) | Q(has_ticket=False))
+        elif free.lower() == 'false':
+            self.queryset = self.queryset.exclude(Q(ticket_price=0) | Q(has_ticket=True))
+
+    def highlighted_filter(self):
+        self.queryset = self.queryset.filter(highlighted=True)
+        
