@@ -9,6 +9,11 @@ class Location(models.Model):
     def __str__(self):
         return self.name
     
+    def save(self, *args, **kwargs):
+        if self.coordinates:
+            self.coordinates = self.coordinates.replace(" ", "")
+        super(Location, self).save(*args, **kwargs)
+    
     @property
     def google_maps_link(self):
         if self.coordinates:
