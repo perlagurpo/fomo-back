@@ -1,36 +1,43 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
-from datetime import datetime
-import locale
 from category.models import Category
 from location.models import Location
+from django.utils import timezone
+import os
+
+def image_upload_path(instance, filename):
+    timestamp = timezone.now().strftime('%Y-%m-%d--%H-%M-%S')
+    extension = os.path.splitext(filename)[-1]
+    unique_filename = f"{timestamp}{extension}"
+    return os.path.join('images', unique_filename)
 
 # Create your models here.
 class Event(models.Model):
-    # Atributos de la clase Event
-    start_date = models.DateTimeField() #YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] lo que está entre corchetes es opcional.
-    end_date = models.DateTimeField(null=True, blank=True)
-    event_name = models.CharField(max_length=255)
-    has_ticket = models.BooleanField(null=True, blank=True)
-    ticket_price = models.IntegerField(null=True, blank=True)
-    tickets_left = models.BooleanField(null=True, blank=True)
-    tickets_available = models.IntegerField(null=True, blank=True)
-    ticket_type = models.CharField(max_length=255, null=True, blank=True, help_text='Entrada virtual, física, etc')
-    description = models.TextField(null=True, blank=True)
-    buy_tickets = models.CharField(max_length=255, null=True, blank=True)
-    event_link = models.CharField(max_length=255, null=True, blank=True)
-    event_img = models.ImageField(max_length=255, upload_to='images/')
-    organization_page = models.CharField(max_length=255, null=True, blank=True)
-    event_location = models.CharField(max_length=255)
-    location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL, to_field='name')
-    user_creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, blank=True)#esto no me gusta
-    highlighted = models.BooleanField(default=False)#excluido del panel de creación en admin.py
-    category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL, blank=True, to_field='name')
+    # Atributos de la clase Event #verbose
+    start_date = models.DateTimeField(verbose_name='Inicio del evento') #YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] lo que está entre corchetes es opcional.
+    end_date = models.DateTimeField(null=True, blank=True, verbose_name='Fin del evento')
+    event_name = models.CharField(max_length=255, verbose_name='Nombre del evento')
+    has_ticket = models.BooleanField(null=True, blank=True, verbose_name='¿Tiene entrada?')
+    ticket_price = models.IntegerField(null=True, blank=True, verbose_name='Precio')
+    tickets_left = models.BooleanField(null=True, blank=True, verbose_name='¿Quedan entradas?')
+    tickets_available = models.IntegerField(null=True, blank=True, verbose_name='Cantidad de entradas disponibles')
+    ticket_type = models.CharField(max_length=255, null=True, blank=True, verbose_name='Tipo de entrada', help_text='Entrada virtual, física, etc')
+    description = models.TextField(null=True, blank=True, verbose_name='Descripción')
+    buy_tickets = models.CharField(max_length=255, null=True, blank=True, verbose_name='Comprar tickets:')
+    event_link = models.CharField(max_length=255, null=True, blank=True, verbose_name='Link al evento:')
+    event_img = models.ImageField(max_length=255, upload_to=image_upload_path, verbose_name='Imagen del evento')
+    organization_page = models.CharField(max_length=255, null=True, blank=True, verbose_name='Página organización')
+    location_event = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='Lugar')
+    user_creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, blank=True, verbose_name='Organización')#esto no me gusta
+    highlighted = models.BooleanField(default=False, verbose_name='¿Evento destacado?')#excluido del panel de creación en admin.py
+    category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL, blank=True, to_field='name', verbose_name='categoría')
+    slug = models.SlugField(blank=True)
+
 
     class Meta:
         ordering = ['start_date']
+        verbose_name = 'Evento'
+        verbose_name_plural = 'Eventos'
 
     @property
     def day_name_start(self):
@@ -56,6 +63,19 @@ class Event(models.Model):
             day_name_end_es = translate_day(day_name_end_eng)
             return day_name_end_es
         return None
+    
+    @property
+    def time_difference(self):
+        if self.start_date and self.end_date:
+            duration = self.end_date - self.start_date
+
+            days = duration.days
+            hours, remainder = divmod(duration.seconds, 3600)
+            minutes, _ = divmod(remainder, 60)
+
+            return f"{days} días, {hours} horas, {minutes} minutos"
+        
+        return None
 
 
     def __str__(self):
@@ -80,7 +100,9 @@ def translate_day(day_in_english):
 
     return traducciones.get(day_in_english, "Día no válido")
 
-###########Esto podría ser útil?
-    # @property
-    # def formatted_start_date(self):
-    #     return self.start_date.strftime('%d-%m-%Y %H:%M')
+
+
+####Para cambiar el formato de la fecha en nuevo falso-atributo
+# def event_date_formatted(self, obj):
+    # return obj.event_date.strftime("%d-%m-%Y %H:%M")  # Formato deseado
+    # event_date_formatted.short_description = 'Fecha del Evento'  # Nombre de la columna en el admin

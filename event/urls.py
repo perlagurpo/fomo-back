@@ -8,7 +8,7 @@ from event import views
 
 urlpatterns = [
     path(r'', views.EventListView.as_view(), name='event_list'),
-    path(r'<int:pk>/', views.EventDetailView.as_view(), name='event_detail'),
+    path(r'<slug:slug>/', views.EventDetailView.as_view(), name='event_detail'),
 ]
 
 # Configuración para servir imágenes en desarrollo
