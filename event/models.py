@@ -23,7 +23,7 @@ class Event(models.Model):
     tickets_available = models.IntegerField(null=True, blank=True, verbose_name='Cantidad de entradas disponibles')
     ticket_type = models.CharField(max_length=255, null=True, blank=True, verbose_name='Tipo de entrada', help_text='Entrada virtual, física, etc')
     description = models.TextField(null=True, blank=True, verbose_name='Descripción')
-    buy_tickets = models.CharField(max_length=255, null=True, blank=True, verbose_name='Comprar tickets:')
+    buy_tickets = models.CharField(max_length=255, null=True, blank=True, verbose_name='Link para comprar tickets:')
     event_link = models.CharField(max_length=255, null=True, blank=True, verbose_name='Link al evento:')
     event_img = models.ImageField(max_length=255, upload_to=image_upload_path, verbose_name='Imagen del evento')
     organization_page = models.CharField(max_length=255, null=True, blank=True, verbose_name='Página organización')
