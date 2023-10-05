@@ -16,6 +16,7 @@ class Event(models.Model):
     TICKET_TYPES = (
         ('virtual', 'Entrada virtual'),
         ('fisica', 'Entrada física'),
+        ('fisica y virtual', 'Entrada fisica y virtual')
     )
 
 
