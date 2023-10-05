@@ -13,6 +13,12 @@ def image_upload_path(instance, filename):
 
 # Create your models here.
 class Event(models.Model):
+    TICKET_TYPES = (
+        ('virtual', 'Entrada virtual'),
+        ('fisica', 'Entrada física'),
+    )
+
+
     # Atributos de la clase Event #verbose
     start_date = models.DateTimeField(verbose_name='Inicio del evento') #YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] lo que está entre corchetes es opcional.
     end_date = models.DateTimeField(null=True, blank=True, verbose_name='Fin del evento')
@@ -21,7 +27,7 @@ class Event(models.Model):
     ticket_price = models.IntegerField(null=True, blank=True, verbose_name='Precio')
     tickets_left = models.BooleanField(null=True, blank=True, verbose_name='¿Quedan entradas?')
     tickets_available = models.IntegerField(null=True, blank=True, verbose_name='Cantidad de entradas disponibles')
-    ticket_type = models.CharField(max_length=255, null=True, blank=True, verbose_name='Tipo de entrada', help_text='Entrada virtual, física, etc')
+    ticket_type = models.CharField(max_length=255, choices=TICKET_TYPES, null=True, blank=True, verbose_name='Tipo de entrada', help_text='Entrada virtual, física, etc')
     description = models.TextField(null=True, blank=True, verbose_name='Descripción')
     buy_tickets = models.CharField(max_length=255, null=True, blank=True, verbose_name='Link para comprar tickets:')
     event_link = models.CharField(max_length=255, null=True, blank=True, verbose_name='Link al evento:')
