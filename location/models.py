@@ -2,9 +2,9 @@ from django.db import models
 
 # Create your models here.
 class Location(models.Model):
-    name = models.CharField(max_length=255, null=True, blank=True, unique=True, verbose_name='Lugar')
-    address = models.CharField(max_length=255, null=True, blank=True, unique=True, verbose_name='Dirección')
-    coordinates = models.CharField(max_length=255, null=True, blank=True, unique=True, verbose_name='Coordenadas')
+    name = models.CharField(max_length=255, unique=True, verbose_name='Lugar')
+    address = models.CharField(max_length=255, unique=True, verbose_name='Dirección')
+    coordinates = models.CharField(max_length=255, unique=True, verbose_name='Coordenadas')
 
     def __str__(self):
         return self.name
