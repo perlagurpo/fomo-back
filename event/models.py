@@ -14,9 +14,9 @@ def image_upload_path(instance, filename):
 # Create your models here.
 class Event(models.Model):
     TICKET_TYPES = (
-        ('virtual', 'Entrada virtual'),
-        ('fisica', 'Entrada física'),
-        ('fisica y virtual', 'Entrada fisica y virtual')
+        ('Entrada virtual', 'Entrada virtual'),
+        ('Entrada física', 'Entrada fisica'),
+        ('Entrada física y virtual', 'Entrada fisica y virtual')
     )
 
 
