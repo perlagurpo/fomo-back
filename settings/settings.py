@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'carousel',
     'rest_framework_simplejwt',
     'location',
+    'banner',
 ]
 
 MIDDLEWARE = [
