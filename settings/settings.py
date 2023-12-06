@@ -95,6 +95,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+	'TIME_ZONE': 'America/Argentina/Buenos_Aires',
     }
 }
 
@@ -129,6 +130,8 @@ USE_I18N = True
 
 USE_TZ = True
 
+
+TIME_ZONE = 'America/Argentina/Buenos_Aires'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
