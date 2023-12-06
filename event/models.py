@@ -11,6 +11,14 @@ def image_upload_path(instance, filename):
     unique_filename = f"{timestamp}{extension}"
     return os.path.join('images', unique_filename)
 
+
+class DateEvent(models.Model):
+    fecha = models.DateField()
+
+    def __str__(self):
+        return str(self.fecha)
+
+
 # Create your models here.
 class Event(models.Model):
     TICKET_TYPES = (
@@ -39,6 +47,7 @@ class Event(models.Model):
     highlighted = models.BooleanField(default=False, verbose_name='¿Evento destacado?')#excluido del panel de creación en admin.py
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL, blank=True, to_field='name', verbose_name='categoría')
     slug = models.SlugField(blank=True)
+    date_to_repeat = models.ManyToManyField(DateEvent)
 
 
     class Meta:
