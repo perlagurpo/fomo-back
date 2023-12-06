@@ -8,6 +8,9 @@ from event.services import get_event_by_query_params, replace_T_and_Z
 from django.db.models import Q, F
 from rest_framework.pagination import PageNumberPagination
 
+from django.http import HttpResponse
+from django.core.management import call_command
+
 
 class EventPagination(PageNumberPagination):
     page_size = 10
