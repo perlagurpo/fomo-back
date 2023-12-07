@@ -47,7 +47,7 @@ class Event(models.Model):
     highlighted = models.BooleanField(default=False, verbose_name='¿Evento destacado?')#excluido del panel de creación en admin.py
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL, blank=True, to_field='name', verbose_name='categoría')
     slug = models.SlugField(blank=True)
-    date_to_repeat = models.ManyToManyField(DateEvent)
+    date_to_repeat = models.ManyToManyField(DateEvent, blank=True, null=True)
 
 
     class Meta:
