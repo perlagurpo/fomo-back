@@ -26,9 +26,6 @@ class Event(models.Model):
         ('Entrada física', 'Entrada fisica'),
         ('Entrada física y virtual', 'Entrada fisica y virtual')
     )
-
-
-    # Atributos de la clase Event #verbose
     start_date = models.DateTimeField(verbose_name='Inicio del evento') #YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] lo que está entre corchetes es opcional.
     end_date = models.DateTimeField(null=True, blank=True, verbose_name='Fin del evento')
     event_name = models.CharField(max_length=255, verbose_name='Nombre del evento')
